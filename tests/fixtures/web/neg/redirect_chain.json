@@ -1,0 +1,55 @@
+{
+ "format": "web-capture/1",
+ "exchanges": [
+  {
+   "request": {
+    "method": "GET",
+    "url": "http://app.example.test/",
+    "headers": {}
+   },
+   "response": {
+    "status": 301,
+    "headers": [
+     [
+      "Location",
+      "https://app.example.test/"
+     ]
+    ],
+    "body": ""
+   }
+  },
+  {
+   "request": {
+    "method": "GET",
+    "url": "https://app.example.test/",
+    "headers": {}
+   },
+   "response": {
+    "status": 200,
+    "headers": [
+     [
+      "Content-Type",
+      "text/html; charset=utf-8"
+     ],
+     [
+      "Strict-Transport-Security",
+      "max-age=63072000; includeSubDomains"
+     ],
+     [
+      "Content-Security-Policy",
+      "default-src 'self'; script-src 'self' 'nonce-r4nd0m'; frame-ancestors 'none'; object-src 'none'"
+     ],
+     [
+      "X-Content-Type-Options",
+      "nosniff"
+     ],
+     [
+      "Referrer-Policy",
+      "strict-origin-when-cross-origin"
+     ]
+    ],
+    "body": "<!doctype html><html><head><title>App</title></head><body><p>hello</p></body></html>\n"
+   }
+  }
+ ]
+}

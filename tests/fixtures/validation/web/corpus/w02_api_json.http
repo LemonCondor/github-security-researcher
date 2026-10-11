@@ -1,0 +1,8 @@
+# url: https://w02.test/api/v1/items
+# method: GET
+HTTP/1.1 200 OK
+Content-Type: application/json
+Strict-Transport-Security: max-age=31536000
+X-Content-Type-Options: nosniff
+
+{"items": []}

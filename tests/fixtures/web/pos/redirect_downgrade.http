@@ -1,0 +1,5 @@
+# url: https://app.example.test/old
+HTTP/1.1 302 X
+Location: http://app.example.test/new
+Strict-Transport-Security: max-age=63072000; includeSubDomains
+

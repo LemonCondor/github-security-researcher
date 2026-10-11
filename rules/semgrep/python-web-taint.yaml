@@ -1,0 +1,145 @@
+# Internal high-precision rules: taint from HTTP request data to dangerous sinks.
+# Taint mode (not pattern mode) => far fewer false positives than "any call to execute()".
+rules:
+  - id: gsr-py-sqli
+    mode: taint
+    languages: [python]
+    severity: ERROR
+    message: HTTP request data flows into a SQL string executed without parameters.
+    metadata: &meta
+      gsr_category: sql-injection
+      gsr_source: http-request
+      gsr_sink: db.execute
+      cwe: ["CWE-89"]
+      confidence: HIGH
+      references: ["https://cwe.mitre.org/data/definitions/89.html"]
+    pattern-sources: &web_sources
+      - pattern-either:
+          - pattern: flask.request.$ATTR
+          - pattern: flask.request.$ATTR.get(...)
+          - pattern: flask.request.$ATTR[...]
+          - pattern: $REQ.GET.get(...)
+          - pattern: $REQ.POST.get(...)
+          - pattern: $REQ.GET[...]
+          - pattern: $REQ.POST[...]
+          - pattern: $REQ.query_params.get(...)
+    pattern-sanitizers:
+      - pattern: int(...)
+    pattern-sinks:
+      - patterns:
+          - pattern-either:
+              - pattern: $CUR.execute($Q, ...)
+              - pattern: $CUR.executemany($Q, ...)
+              - pattern: $CUR.executescript($Q)
+              - pattern: $DB.raw($Q, ...)
+              - pattern: sqlalchemy.text($Q)
+          - focus-metavariable: $Q
+
+  - id: gsr-py-command-injection
+    mode: taint
+    languages: [python]
+    severity: ERROR
+    message: HTTP request data reaches a shell command.
+    metadata:
+      gsr_category: command-injection
+      gsr_source: http-request
+      gsr_sink: shell
+      cwe: ["CWE-78"]
+      confidence: HIGH
+      references: ["https://cwe.mitre.org/data/definitions/78.html"]
+    pattern-sources: *web_sources
+    pattern-sanitizers:
+      - pattern: shlex.quote(...)
+      - pattern: int(...)
+    pattern-sinks:
+      - pattern: os.system(...)
+      - pattern: os.popen(...)
+      - pattern: subprocess.$F(..., shell=True, ...)
+      - patterns:
+          - pattern: subprocess.$F($CMD, ...)
+          - pattern-not: subprocess.$F([...], ...)
+          - focus-metavariable: $CMD
+
+  - id: gsr-py-path-traversal
+    mode: taint
+    languages: [python]
+    severity: WARNING
+    message: HTTP request data used as a filesystem path without normalisation/containment check.
+    metadata:
+      gsr_category: path-traversal
+      gsr_source: http-request
+      gsr_sink: filesystem
+      cwe: ["CWE-22"]
+      confidence: MEDIUM
+      references: ["https://cwe.mitre.org/data/definitions/22.html"]
+    pattern-sources: *web_sources
+    pattern-sanitizers:
+      - pattern: os.path.basename(...)
+      - pattern: werkzeug.utils.secure_filename(...)
+      - pattern: secure_filename(...)
+    pattern-sinks:
+      - pattern: open(...)
+      - pattern: flask.send_file(...)
+      - pattern: os.remove(...)
+      - pattern: pathlib.Path(...).read_text(...)
+
+  - id: gsr-py-ssrf
+    mode: taint
+    languages: [python]
+    severity: WARNING
+    message: HTTP request data controls the URL of a server-side request.
+    metadata:
+      gsr_category: ssrf
+      gsr_source: http-request
+      gsr_sink: http-client
+      cwe: ["CWE-918"]
+      confidence: MEDIUM
+      references: ["https://cwe.mitre.org/data/definitions/918.html"]
+    pattern-sources: *web_sources
+    pattern-sinks:
+      - patterns:
+          - pattern-either:
+              - pattern: requests.$M($URL, ...)
+              - pattern: urllib.request.urlopen($URL, ...)
+              - pattern: httpx.$M($URL, ...)
+          - focus-metavariable: $URL
+
+  - id: gsr-py-xss-flask
+    mode: taint
+    languages: [python]
+    severity: WARNING
+    message: HTTP request data rendered as HTML without escaping.
+    metadata:
+      gsr_category: xss
+      gsr_source: http-request
+      gsr_sink: html-response
+      cwe: ["CWE-79"]
+      confidence: MEDIUM
+      references: ["https://cwe.mitre.org/data/definitions/79.html"]
+    pattern-sources: *web_sources
+    pattern-sanitizers:
+      - pattern: markupsafe.escape(...)
+      - pattern: html.escape(...)
+      - pattern: escape(...)
+    pattern-sinks:
+      - pattern: flask.render_template_string(...)
+      - pattern: flask.make_response(...)
+      - pattern: markupsafe.Markup(...)
+
+  - id: gsr-py-insecure-deserialization
+    mode: taint
+    languages: [python]
+    severity: ERROR
+    message: HTTP request data deserialized with an unsafe loader.
+    metadata:
+      gsr_category: insecure-deserialization
+      gsr_source: http-request
+      gsr_sink: deserializer
+      cwe: ["CWE-502"]
+      confidence: HIGH
+      references: ["https://cwe.mitre.org/data/definitions/502.html"]
+    pattern-sources: *web_sources
+    pattern-sinks:
+      - pattern: pickle.loads(...)
+      - pattern: yaml.load(..., Loader=yaml.Loader)
+      - pattern: yaml.unsafe_load(...)

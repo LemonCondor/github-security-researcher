@@ -1,0 +1,561 @@
+{
+ "corpus": "web-validation/1",
+ "frozen_before_engine_run": true,
+ "protocol": "50 cases written and labelled from OWASP/CWE/vendor advisories before the first engine run on them; distinct host per case (engine dedups per host); no rule change after measurement",
+ "expected_input_errors": [
+  "w50_malformed.http"
+ ],
+ "ignore_unlabeled_prefixes": [
+  "web.hdr."
+ ],
+ "rule_map": {
+  "hsts": [
+   "web.hdr.hsts-missing",
+   "web.hdr.hsts-short-max-age"
+  ],
+  "csp-missing": [
+   "web.hdr.csp-missing"
+  ],
+  "csp-weak": [
+   "web.hdr.csp-unsafe-inline",
+   "web.hdr.csp-wildcard-script"
+  ],
+  "xcto": [
+   "web.hdr.xcto-missing"
+  ],
+  "frame": [
+   "web.hdr.frame-protection-missing"
+  ],
+  "referrer": [
+   "web.hdr.referrer-policy-missing",
+   "web.hdr.referrer-policy-unsafe"
+  ],
+  "cookie": [
+   "web.cookie.secure-missing",
+   "web.cookie.httponly-missing",
+   "web.cookie.samesite-missing",
+   "web.cookie.samesite-none-insecure",
+   "web.cookie.prefix-violation"
+  ],
+  "open-redirect": [
+   "web.redirect.open-redirect-candidate"
+  ],
+  "https-upgrade": [
+   "web.redirect.no-https-upgrade"
+  ],
+  "downgrade": [
+   "web.redirect.https-downgrade"
+  ],
+  "cors": [
+   "web.cors.wildcard-with-credentials",
+   "web.cors.null-origin-credentials",
+   "web.cors.reflected-origin"
+  ],
+  "version-header": [
+   "web.disclosure.version-header"
+  ],
+  "debug": [
+   "web.disclosure.debug-page"
+  ],
+  "stack-trace": [
+   "web.disclosure.stack-trace"
+  ],
+  "env": [
+   "web.disclosure.env-file"
+  ],
+  "git": [
+   "web.disclosure.git-metadata"
+  ],
+  "dir-listing": [
+   "web.disclosure.directory-listing"
+  ],
+  "sourcemap": [
+   "web.disclosure.sourcemap-reference"
+  ],
+  "jslib": [
+   "web.js.known-vulnerable-library"
+  ],
+  "secret": [
+   "web.secret.aws-access-key-id",
+   "web.secret.github-token",
+   "web.secret.slack-token",
+   "web.secret.stripe-secret-key",
+   "web.secret.private-key",
+   "web.secret.google-api-key"
+  ]
+ },
+ "labels": [
+  {
+   "id": "w01:hsts",
+   "file": "w01_secure_full.http",
+   "category": "hsts",
+   "truth": "SAFE",
+   "in_scope": true,
+   "source": "complete modern header set"
+  },
+  {
+   "id": "w01:csp-missing",
+   "file": "w01_secure_full.http",
+   "category": "csp-missing",
+   "truth": "SAFE",
+   "in_scope": true,
+   "source": "complete modern header set"
+  },
+  {
+   "id": "w01:csp-weak",
+   "file": "w01_secure_full.http",
+   "category": "csp-weak",
+   "truth": "SAFE",
+   "in_scope": true,
+   "source": "complete modern header set"
+  },
+  {
+   "id": "w01:xcto",
+   "file": "w01_secure_full.http",
+   "category": "xcto",
+   "truth": "SAFE",
+   "in_scope": true,
+   "source": "complete modern header set"
+  },
+  {
+   "id": "w01:frame",
+   "file": "w01_secure_full.http",
+   "category": "frame",
+   "truth": "SAFE",
+   "in_scope": true,
+   "source": "complete modern header set"
+  },
+  {
+   "id": "w01:referrer",
+   "file": "w01_secure_full.http",
+   "category": "referrer",
+   "truth": "SAFE",
+   "in_scope": true,
+   "source": "complete modern header set"
+  },
+  {
+   "id": "w01:cookie",
+   "file": "w01_secure_full.http",
+   "category": "cookie",
+   "truth": "SAFE",
+   "in_scope": true,
+   "source": "complete modern header set"
+  },
+  {
+   "id": "w02:csp-missing",
+   "file": "w02_api_json.http",
+   "category": "csp-missing",
+   "truth": "FACT",
+   "in_scope": true,
+   "source": "JSON API without CSP/XFO: fact, not exploitable by itself"
+  },
+  {
+   "id": "w02:frame",
+   "file": "w02_api_json.http",
+   "category": "frame",
+   "truth": "FACT",
+   "in_scope": true,
+   "source": "JSON API without CSP/XFO: fact, not exploitable by itself"
+  },
+  {
+   "id": "w02:referrer",
+   "file": "w02_api_json.http",
+   "category": "referrer",
+   "truth": "FACT",
+   "in_scope": true,
+   "source": "JSON API without CSP/XFO: fact, not exploitable by itself"
+  },
+  {
+   "id": "w03:hsts",
+   "file": "w03_http_plain.http",
+   "category": "hsts",
+   "truth": "SAFE",
+   "in_scope": true,
+   "source": "HSTS is not applicable over plain http (no missing-HSTS claim)"
+  },
+  {
+   "id": "w04:csp-weak",
+   "file": "w04_csp_inline_hash.http",
+   "category": "csp-weak",
+   "truth": "SAFE",
+   "in_scope": true,
+   "source": "'unsafe-inline' is ignored by CSP2+ browsers when a hash is present"
+  },
+  {
+   "id": "w05:csp-weak",
+   "file": "w05_csp_inline.http",
+   "category": "csp-weak",
+   "truth": "FACT",
+   "in_scope": true,
+   "source": "'unsafe-inline' without nonce/hash weakens CSP"
+  },
+  {
+   "id": "w06:csp-weak",
+   "file": "w06_csp_malformed.http",
+   "category": "csp-weak",
+   "truth": "AMBIGUOUS",
+   "in_scope": true,
+   "source": "malformed CSP value"
+  },
+  {
+   "id": "w06:csp-missing",
+   "file": "w06_csp_malformed.http",
+   "category": "csp-missing",
+   "truth": "AMBIGUOUS",
+   "in_scope": true,
+   "source": "malformed CSP value"
+  },
+  {
+   "id": "w07:hsts",
+   "file": "w07_hsts_malformed.http",
+   "category": "hsts",
+   "truth": "AMBIGUOUS",
+   "in_scope": true,
+   "source": "max-age not a number (invalid header)"
+  },
+  {
+   "id": "w08:frame",
+   "file": "w08_xfo_allowall.http",
+   "category": "frame",
+   "truth": "FACT",
+   "in_scope": true,
+   "source": "ALLOWALL is not a valid XFO value and no frame-ancestors"
+  },
+  {
+   "id": "w09:cookie",
+   "file": "w09_cookie_ok.http",
+   "category": "cookie",
+   "truth": "SAFE",
+   "in_scope": true,
+   "source": "session cookie with Secure/HttpOnly/SameSite"
+  },
+  {
+   "id": "w10:cookie",
+   "file": "w10_cookie_insecure.http",
+   "category": "cookie",
+   "truth": "FACT",
+   "in_scope": true,
+   "source": "session cookie without Secure/HttpOnly/SameSite over https"
+  },
+  {
+   "id": "w11:cookie",
+   "file": "w11_cookie_pref.http",
+   "category": "cookie",
+   "truth": "AMBIGUOUS",
+   "in_scope": true,
+   "source": "non-session preference cookie without attributes"
+  },
+  {
+   "id": "w12:cookie",
+   "file": "w12_cookie_lowercase.http",
+   "category": "cookie",
+   "truth": "SAFE",
+   "in_scope": true,
+   "source": "attributes in lower case are valid"
+  },
+  {
+   "id": "w13:cookie",
+   "file": "w13_cookie_host_prefix_ok.http",
+   "category": "cookie",
+   "truth": "SAFE",
+   "in_scope": true,
+   "source": "valid __Host- cookie"
+  },
+  {
+   "id": "w14:cookie",
+   "file": "w14_cookie_expires_comma.http",
+   "category": "cookie",
+   "truth": "SAFE",
+   "in_scope": true,
+   "source": "comma inside Expires must not split the cookie"
+  },
+  {
+   "id": "w15:open-redirect",
+   "file": "w15_redirect_open.json",
+   "category": "open-redirect",
+   "truth": "VULN",
+   "in_scope": true,
+   "source": "Location equals a cross-host next= parameter (CWE-601)"
+  },
+  {
+   "id": "w16:open-redirect",
+   "file": "w16_redirect_internal.json",
+   "category": "open-redirect",
+   "truth": "SAFE",
+   "in_scope": true,
+   "source": "relative internal redirect"
+  },
+  {
+   "id": "w17:open-redirect",
+   "file": "w17_redirect_ignored_param.json",
+   "category": "open-redirect",
+   "truth": "SAFE",
+   "in_scope": true,
+   "source": "cross-host next= ignored by the server"
+  },
+  {
+   "id": "w18:https-upgrade",
+   "file": "w18_redirect_upgrade.json",
+   "category": "https-upgrade",
+   "truth": "SAFE",
+   "in_scope": true,
+   "source": "http is upgraded to https"
+  },
+  {
+   "id": "w19:downgrade",
+   "file": "w19_redirect_downgrade.json",
+   "category": "downgrade",
+   "truth": "FACT",
+   "in_scope": true,
+   "source": "https redirect to http"
+  },
+  {
+   "id": "w20:cors",
+   "file": "w20_cors_reflect_creds.json",
+   "category": "cors",
+   "truth": "VULN",
+   "in_scope": true,
+   "source": "arbitrary Origin reflected with credentials"
+  },
+  {
+   "id": "w21:cors",
+   "file": "w21_cors_static.json",
+   "category": "cors",
+   "truth": "SAFE",
+   "in_scope": true,
+   "source": "static allow-listed origin, Vary: Origin"
+  },
+  {
+   "id": "w22:cors",
+   "file": "w22_cors_wildcard_public.http",
+   "category": "cors",
+   "truth": "SAFE",
+   "in_scope": true,
+   "source": "wildcard on a public font without credentials"
+  },
+  {
+   "id": "w23:cors",
+   "file": "w23_cors_wildcard_creds.http",
+   "category": "cors",
+   "truth": "FACT",
+   "in_scope": true,
+   "source": "'*' with credentials is rejected by browsers: misconfiguration, not exploitable"
+  },
+  {
+   "id": "w24:cors",
+   "file": "w24_cors_null.json",
+   "category": "cors",
+   "truth": "VULN",
+   "in_scope": true,
+   "source": "null origin trusted with credentials (sandboxed iframes send null)"
+  },
+  {
+   "id": "w25:version-header",
+   "file": "w25_server_version.http",
+   "category": "version-header",
+   "truth": "FACT",
+   "in_scope": true,
+   "source": "version banner"
+  },
+  {
+   "id": "w26:version-header",
+   "file": "w26_server_generic.http",
+   "category": "version-header",
+   "truth": "SAFE",
+   "in_scope": true,
+   "source": "no version in Server"
+  },
+  {
+   "id": "w27:debug",
+   "file": "w27_django_debug.http",
+   "category": "debug",
+   "truth": "VULN",
+   "in_scope": true,
+   "source": "Django DEBUG=True 404 page"
+  },
+  {
+   "id": "w28:stack-trace",
+   "file": "w28_blog_traceback.http",
+   "category": "stack-trace",
+   "truth": "SAFE",
+   "in_scope": true,
+   "source": "traceback shown as content of a 200 blog page"
+  },
+  {
+   "id": "w28:debug",
+   "file": "w28_blog_traceback.http",
+   "category": "debug",
+   "truth": "SAFE",
+   "in_scope": true,
+   "source": "traceback shown as content of a 200 blog page"
+  },
+  {
+   "id": "w29:stack-trace",
+   "file": "w29_java_trace_500.http",
+   "category": "stack-trace",
+   "truth": "VULN",
+   "in_scope": true,
+   "source": "Java stack trace in a 500 response"
+  },
+  {
+   "id": "w30:env",
+   "file": "w30_env_file.http",
+   "category": "env",
+   "truth": "VULN",
+   "in_scope": true,
+   "source": ".env served with credentials-like keys"
+  },
+  {
+   "id": "w31:env",
+   "file": "w31_env_docs.http",
+   "category": "env",
+   "truth": "SAFE",
+   "in_scope": true,
+   "source": "documentation page mentioning .env with placeholder"
+  },
+  {
+   "id": "w32:git",
+   "file": "w32_git_config.http",
+   "category": "git",
+   "truth": "VULN",
+   "in_scope": true,
+   "source": ".git/config served"
+  },
+  {
+   "id": "w33:git",
+   "file": "w33_git_404.http",
+   "category": "git",
+   "truth": "SAFE",
+   "in_scope": true,
+   "source": ".git/config returns 404"
+  },
+  {
+   "id": "w34:dir-listing",
+   "file": "w34_dir_listing.http",
+   "category": "dir-listing",
+   "truth": "AMBIGUOUS",
+   "in_scope": true,
+   "source": "directory listing of /backup (impact depends on content)"
+  },
+  {
+   "id": "w35:sourcemap",
+   "file": "w35_sourcemap.js",
+   "category": "sourcemap",
+   "truth": "FACT",
+   "in_scope": true,
+   "source": "sourceMappingURL reference"
+  },
+  {
+   "id": "w36:jslib",
+   "file": "w36_jquery_1_12_4.js",
+   "category": "jslib",
+   "truth": "VULN",
+   "in_scope": true,
+   "source": "jQuery < 3.5.0 (CVE-2020-11022/11023, CVE-2019-11358)"
+  },
+  {
+   "id": "w37:jslib",
+   "file": "w37_jquery_3_7_1.js",
+   "category": "jslib",
+   "truth": "SAFE",
+   "in_scope": true,
+   "source": "current jQuery"
+  },
+  {
+   "id": "w38:jslib",
+   "file": "w38_jquery_3_5_0.js",
+   "category": "jslib",
+   "truth": "SAFE",
+   "in_scope": true,
+   "source": "jQuery 3.5.0 fixes CVE-2020-11022/11023 and CVE-2019-11358"
+  },
+  {
+   "id": "w39:jslib",
+   "file": "w39_lodash_4_17_20.js",
+   "category": "jslib",
+   "truth": "VULN",
+   "in_scope": true,
+   "source": "lodash < 4.17.21 (CVE-2021-23337)"
+  },
+  {
+   "id": "w40:jslib",
+   "file": "w40_lodash_4_17_21.js",
+   "category": "jslib",
+   "truth": "SAFE",
+   "in_scope": true,
+   "source": "lodash 4.17.21"
+  },
+  {
+   "id": "w41:jslib",
+   "file": "w41_bootstrap_3_3_7.html",
+   "category": "jslib",
+   "truth": "VULN",
+   "in_scope": true,
+   "source": "Bootstrap < 3.4.0 (CVE-2018-14040/14041/14042)"
+  },
+  {
+   "id": "w42:jslib",
+   "file": "w42_angular_1_8_3.html",
+   "category": "jslib",
+   "truth": "AMBIGUOUS",
+   "in_scope": true,
+   "source": "AngularJS 1.8.3: end of life, ReDoS CVEs without fixed 1.x version"
+  },
+  {
+   "id": "w43:jslib",
+   "file": "w43_jquery_text_mention.html",
+   "category": "jslib",
+   "truth": "SAFE",
+   "in_scope": true,
+   "source": "old version only mentioned in page text; loads 3.7.1"
+  },
+  {
+   "id": "w44:jslib",
+   "file": "w44_moment_2_29_1.js",
+   "category": "jslib",
+   "truth": "VULN",
+   "in_scope": true,
+   "source": "moment < 2.29.2 (CVE-2022-24785)"
+  },
+  {
+   "id": "w45:secret",
+   "file": "w45_aws_example_key.js",
+   "category": "secret",
+   "truth": "SAFE",
+   "in_scope": true,
+   "source": "AWS documented example key AKIAIOSFODNN7EXAMPLE"
+  },
+  {
+   "id": "w46:secret",
+   "file": "w46_aws_like_key.js",
+   "category": "secret",
+   "truth": "AMBIGUOUS",
+   "in_scope": true,
+   "source": "AWS-format key id, validity unknown (never tested)"
+  },
+  {
+   "id": "w47:secret",
+   "file": "w47_github_like_token.js",
+   "category": "secret",
+   "truth": "AMBIGUOUS",
+   "in_scope": true,
+   "source": "GitHub-format token, validity unknown (never tested)"
+  },
+  {
+   "id": "w48:secret",
+   "file": "w48_private_key.js",
+   "category": "secret",
+   "truth": "VULN",
+   "in_scope": true,
+   "source": "PEM private key block in a public asset"
+  },
+  {
+   "id": "w49:secret",
+   "file": "w49_public_key.js",
+   "category": "secret",
+   "truth": "SAFE",
+   "in_scope": true,
+   "source": "public key is not a secret"
+  }
+ ]
+}

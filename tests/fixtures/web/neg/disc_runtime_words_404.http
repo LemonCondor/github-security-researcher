@@ -1,0 +1,6 @@
+# url: https://app.example.test/missing
+HTTP/1.1 404 X
+Content-Type: text/plain
+
+Not found. See our blog post "Why a goroutine panicked at 3am" and the Rust guide on threads that panicked.
+Ruby tip: use users_controller.rb to fix it.

@@ -1,0 +1,11 @@
+# url: https://app.example.test/.env
+HTTP/1.1 200 X
+Content-Type: text/plain
+Strict-Transport-Security: max-age=63072000; includeSubDomains
+X-Content-Type-Options: nosniff
+
+APP_ENV=production
+APP_KEY=base64:redactedvaluefixture
+DB_HOST=10.0.0.5
+DB_PASSWORD=fixture-not-real
+MAIL_FROM=noreply@example.test

@@ -1,0 +1,13 @@
+# Ground truth for precision/recall. line = line of the VULN marker.
+vulnerabilities:
+  - {category: sql-injection, file: app.py, marker: "VULN:sql-injection"}
+  - {category: command-injection, file: app.py, marker: "VULN:command-injection"}
+  - {category: path-traversal, file: app.py, marker: "VULN:path-traversal"}
+  - {category: ssrf, file: app.py, marker: "VULN:ssrf"}
+  - {category: xss, file: app.py, marker: "VULN:xss"}
+  - {category: insecure-deserialization, file: app.py, marker: "VULN:insecure-deserialization"}
+  - {category: auth-bypass, file: app.py, marker: "VULN:auth-bypass"}
+  - {category: secret, file: config.py, marker: "GSR_FAKE_SECRET"}   # generated at test time
+  - {category: vulnerable-dependency, file: requirements.txt, marker: "flask==2.0.0"}
+false_positive_traps:
+  - {file: app.py, marker: "SAFE"}

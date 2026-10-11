@@ -1,0 +1,10 @@
+# url: http://w03.test/
+# method: GET
+HTTP/1.1 200 OK
+Content-Type: text/html
+Strict-Transport-Security: max-age=31536000
+Content-Security-Policy: default-src 'self'; frame-ancestors 'none'
+X-Content-Type-Options: nosniff
+Referrer-Policy: no-referrer
+
+<html><head><title>t</title></head><body>ok</body></html>

@@ -1,0 +1,5 @@
+# url: https://app.example.test/login?next=/dashboard
+HTTP/1.1 302 X
+Location: /dashboard
+Strict-Transport-Security: max-age=63072000; includeSubDomains
+

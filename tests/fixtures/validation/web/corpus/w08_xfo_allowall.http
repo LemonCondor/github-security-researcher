@@ -1,0 +1,11 @@
+# url: https://w08.test/
+# method: GET
+HTTP/1.1 200 OK
+Strict-Transport-Security: max-age=31536000
+Content-Type: text/html
+Content-Security-Policy: default-src 'self'
+X-Frame-Options: ALLOWALL
+X-Content-Type-Options: nosniff
+Referrer-Policy: same-origin
+
+<html><head><title>t</title></head><body>ok</body></html>

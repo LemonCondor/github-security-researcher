@@ -1,0 +1,10 @@
+# url: https://w27.test/nope
+# method: GET
+HTTP/1.1 404 Not Found
+Strict-Transport-Security: max-age=31536000; includeSubDomains
+Content-Security-Policy: default-src 'self'; script-src 'self' 'nonce-r4nd0m'; frame-ancestors 'none'
+X-Content-Type-Options: nosniff
+Referrer-Policy: strict-origin-when-cross-origin
+Content-Type: text/html
+
+<html><head><title>Page not found at /nope</title></head><body><h1>Page not found <span>(404)</span></h1><p>Using the URLconf defined in <code>mysite.urls</code>, Django tried these URL patterns, in this order:</p><p>You're seeing this error because you have <code>DEBUG = True</code> in your Django settings file.</p></body></html>

@@ -1,0 +1,10 @@
+# url: https://w33.test/.git/config
+# method: GET
+HTTP/1.1 404 Not Found
+Strict-Transport-Security: max-age=31536000; includeSubDomains
+Content-Security-Policy: default-src 'self'; script-src 'self' 'nonce-r4nd0m'; frame-ancestors 'none'
+X-Content-Type-Options: nosniff
+Referrer-Policy: strict-origin-when-cross-origin
+Content-Type: text/html
+
+<html><body><h1>404 Not Found</h1></body></html>

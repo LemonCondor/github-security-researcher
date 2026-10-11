@@ -1,0 +1,5 @@
+# url: https://app.example.test/x
+HTTP/1.1 500 X
+Content-Type: text/html; charset=utf-8
+
+<html><body><h1>OperationalError at /x</h1><p>You're seeing this error because you have <code>DEBUG = True</code> in your Django settings file.</p></body></html>

@@ -1,0 +1,4 @@
+# url: http://app.example.test/
+HTTP/1.1 301 X
+Location: https://app.example.test/
+

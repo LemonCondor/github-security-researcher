@@ -1,0 +1,7 @@
+# url: https://app.example.test/api/rs
+HTTP/1.1 500 X
+Content-Type: text/plain
+
+thread 'tokio-runtime-worker' panicked at src/handlers/user.rs:57:31:
+called `Option::unwrap()` on a `None` value
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace

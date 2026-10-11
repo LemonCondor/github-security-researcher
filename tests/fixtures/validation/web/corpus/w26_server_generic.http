@@ -1,0 +1,11 @@
+# url: https://w26.test/
+# method: GET
+HTTP/1.1 200 OK
+Strict-Transport-Security: max-age=31536000; includeSubDomains
+Content-Security-Policy: default-src 'self'; script-src 'self' 'nonce-r4nd0m'; frame-ancestors 'none'
+X-Content-Type-Options: nosniff
+Referrer-Policy: strict-origin-when-cross-origin
+Server: nginx
+Content-Type: text/html
+
+<html><head><title>t</title></head><body>ok</body></html>

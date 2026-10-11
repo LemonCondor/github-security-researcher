@@ -1,0 +1,11 @@
+# url: https://w10.test/login
+# method: GET
+HTTP/1.1 200 OK
+Strict-Transport-Security: max-age=31536000; includeSubDomains
+Content-Security-Policy: default-src 'self'; script-src 'self' 'nonce-r4nd0m'; frame-ancestors 'none'
+X-Content-Type-Options: nosniff
+Referrer-Policy: strict-origin-when-cross-origin
+Content-Type: text/html
+Set-Cookie: JSESSIONID=9F2A7C; Path=/
+
+<html><head><title>t</title></head><body>ok</body></html>

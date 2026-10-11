@@ -1,0 +1,11 @@
+# url: https://app.example.test/api/profile
+# request-header: Origin: https://partner.example.net
+HTTP/1.1 200 X
+Content-Type: application/json
+Strict-Transport-Security: max-age=63072000; includeSubDomains
+X-Content-Type-Options: nosniff
+Access-Control-Allow-Origin: https://partner.example.net
+Access-Control-Allow-Credentials: true
+Cache-Control: public, max-age=600
+
+{}

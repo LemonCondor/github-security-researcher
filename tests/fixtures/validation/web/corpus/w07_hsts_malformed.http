@@ -1,0 +1,10 @@
+# url: https://w07.test/
+# method: GET
+HTTP/1.1 200 OK
+Strict-Transport-Security: max-age=abc
+Content-Type: text/html
+Content-Security-Policy: default-src 'self'; frame-ancestors 'none'
+X-Content-Type-Options: nosniff
+Referrer-Policy: same-origin
+
+<html><head><title>t</title></head><body>ok</body></html>

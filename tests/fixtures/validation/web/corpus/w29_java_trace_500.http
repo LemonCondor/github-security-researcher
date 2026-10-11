@@ -1,0 +1,13 @@
+# url: https://w29.test/api/order
+# method: GET
+HTTP/1.1 500 Internal Server Error
+Strict-Transport-Security: max-age=31536000; includeSubDomains
+Content-Security-Policy: default-src 'self'; script-src 'self' 'nonce-r4nd0m'; frame-ancestors 'none'
+X-Content-Type-Options: nosniff
+Referrer-Policy: strict-origin-when-cross-origin
+Content-Type: text/plain
+
+java.lang.NullPointerException: order is null
+	at com.example.shop.OrderService.place(OrderService.java:88)
+	at com.example.shop.OrderController.post(OrderController.java:41)
+	at java.base/java.lang.Thread.run(Thread.java:833)

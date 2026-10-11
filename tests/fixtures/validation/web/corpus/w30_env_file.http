@@ -1,0 +1,13 @@
+# url: https://w30.test/.env
+# method: GET
+HTTP/1.1 200 OK
+Strict-Transport-Security: max-age=31536000; includeSubDomains
+Content-Security-Policy: default-src 'self'; script-src 'self' 'nonce-r4nd0m'; frame-ancestors 'none'
+X-Content-Type-Options: nosniff
+Referrer-Policy: strict-origin-when-cross-origin
+Content-Type: text/plain
+
+APP_ENV=production
+DB_HOST=10.0.0.5
+DB_PASSWORD=Zq8!synthetic-not-real
+APP_KEY=base64:c3ludGhldGljLW5vdC1yZWFs

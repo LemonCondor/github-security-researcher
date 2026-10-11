@@ -1,0 +1,38 @@
+{
+ "format": "web-capture/1",
+ "exchanges": [
+  {
+   "request": {
+    "method": "GET",
+    "url": "https://w17.test/login?next=https://evil.example/",
+    "headers": {}
+   },
+   "response": {
+    "status": 302,
+    "headers": [
+     [
+      "Strict-Transport-Security",
+      "max-age=31536000; includeSubDomains"
+     ],
+     [
+      "Content-Security-Policy",
+      "default-src 'self'; script-src 'self' 'nonce-r4nd0m'; frame-ancestors 'none'"
+     ],
+     [
+      "X-Content-Type-Options",
+      "nosniff"
+     ],
+     [
+      "Referrer-Policy",
+      "strict-origin-when-cross-origin"
+     ],
+     [
+      "Location",
+      "https://w17.test/home"
+     ]
+    ],
+    "body": ""
+   }
+  }
+ ]
+}

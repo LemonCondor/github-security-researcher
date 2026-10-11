@@ -1,0 +1,625 @@
+{
+ "corpus": "contracts-validation/1",
+ "frozen_before_engine_run": true,
+ "protocol": "labels written from SWC definitions / known incidents before running the engine; rules.py not read; no rule change after measurement",
+ "rule_map": {
+  "reentrancy": [
+   "SOL-REENTRANCY"
+  ],
+  "access-control": [
+   "SOL-ACCESS-CONTROL",
+   "SOL-UNPROTECTED-INIT"
+  ],
+  "tx-origin": [
+   "SOL-TX-ORIGIN"
+  ],
+  "unprotected-init": [
+   "SOL-UNPROTECTED-INIT",
+   "SOL-ACCESS-CONTROL"
+  ],
+  "unchecked-call": [
+   "SOL-UNCHECKED-CALL"
+  ],
+  "delegatecall": [
+   "SOL-DELEGATECALL-PARAM"
+  ],
+  "arithmetic": [
+   "SOL-UNCHECKED-ARITH",
+   "SOL-LEGACY-ARITH"
+  ],
+  "randomness": [],
+  "signature-replay": []
+ },
+ "labels": [
+  {
+   "id": "R1",
+   "file": "reentrancy.sol",
+   "contract": "DaoBank",
+   "function": "withdraw",
+   "category": "reentrancy",
+   "truth": "VULN",
+   "in_scope": true,
+   "source": "SWC-107 / The DAO pattern"
+  },
+  {
+   "id": "R1f",
+   "file": "reentrancy.sol",
+   "contract": "DaoBankFixed",
+   "function": "withdraw",
+   "category": "reentrancy",
+   "truth": "SAFE",
+   "in_scope": true,
+   "source": "fix of R1 (CEI)"
+  },
+  {
+   "id": "R3",
+   "file": "reentrancy.sol",
+   "contract": "GuardedBank",
+   "function": "claim",
+   "category": "reentrancy",
+   "truth": "SAFE",
+   "in_scope": true,
+   "source": "local mutex modifier"
+  },
+  {
+   "id": "R4",
+   "file": "reentrancy.sol",
+   "contract": "TokenVault",
+   "function": "withdrawTokens",
+   "category": "reentrancy",
+   "truth": "AMBIGUOUS",
+   "in_scope": true,
+   "source": "exploitable only if token has transfer hooks (ERC777)"
+  },
+  {
+   "id": "R5",
+   "file": "reentrancy.sol",
+   "contract": "Payout",
+   "function": "pay",
+   "category": "reentrancy",
+   "truth": "SAFE",
+   "in_scope": true,
+   "source": "write after call is unread bookkeeping"
+  },
+  {
+   "id": "R6",
+   "file": "reentrancy.sol",
+   "contract": "SharePool",
+   "function": "cashOut",
+   "category": "reentrancy",
+   "truth": "VULN",
+   "in_scope": true,
+   "source": "flag `paid` read before and set after the call: cashOut re-enterable"
+  },
+  {
+   "id": "R7",
+   "file": "reentrancy.sol",
+   "contract": "StipendBank",
+   "function": "out",
+   "category": "reentrancy",
+   "truth": "SAFE",
+   "in_scope": true,
+   "source": "transfer(): 2300 gas stipend"
+  },
+  {
+   "id": "R2",
+   "file": "reentrancy_legacy.sol",
+   "contract": "LegacyEtherStore",
+   "function": "withdrawFunds",
+   "category": "reentrancy",
+   "truth": "VULN",
+   "in_scope": true,
+   "source": "SWC-107 test case EtherStore (0.4 call.value)"
+  },
+  {
+   "id": "R2a",
+   "file": "reentrancy_legacy.sol",
+   "contract": "LegacyEtherStore",
+   "function": "withdrawFunds",
+   "category": "arithmetic",
+   "truth": "SAFE",
+   "in_scope": true,
+   "source": "require(balance >= x) before the subtraction"
+  },
+  {
+   "id": "R2b",
+   "file": "reentrancy_legacy.sol",
+   "contract": "LegacyEtherStore",
+   "function": "depositFunds",
+   "category": "arithmetic",
+   "truth": "AMBIGUOUS",
+   "in_scope": true,
+   "source": "0.4 `+= msg.value`: overflow unrealistic"
+  },
+  {
+   "id": "A1",
+   "file": "access.sol",
+   "contract": "Killable",
+   "function": "kill",
+   "category": "access-control",
+   "truth": "VULN",
+   "in_scope": true,
+   "source": "SWC-106 unprotected selfdestruct"
+  },
+  {
+   "id": "A1f",
+   "file": "access.sol",
+   "contract": "KillableFixed",
+   "function": "kill",
+   "category": "access-control",
+   "truth": "SAFE",
+   "in_scope": true,
+   "source": "fix of A1"
+  },
+  {
+   "id": "A3",
+   "file": "access.sol",
+   "contract": "Admin",
+   "function": "changeOwner",
+   "category": "access-control",
+   "truth": "VULN",
+   "in_scope": true,
+   "source": "unprotected owner setter"
+  },
+  {
+   "id": "A3f",
+   "file": "access.sol",
+   "contract": "Admin",
+   "function": "changeOwnerSafe",
+   "category": "access-control",
+   "truth": "SAFE",
+   "in_scope": true,
+   "source": "custom modifier with require"
+  },
+  {
+   "id": "A4",
+   "file": "access.sol",
+   "contract": "FeeBox",
+   "function": "setFee",
+   "category": "access-control",
+   "truth": "SAFE",
+   "in_scope": true,
+   "source": "OZ Ownable imported (not in scan path)"
+  },
+  {
+   "id": "A5",
+   "file": "access.sol",
+   "contract": "FakeGuard",
+   "function": "setOwner",
+   "category": "access-control",
+   "truth": "VULN",
+   "in_scope": true,
+   "source": "modifier named onlyOwner with an empty body"
+  },
+  {
+   "id": "A6",
+   "file": "access.sol",
+   "contract": "Treasury",
+   "function": "withdrawAll",
+   "category": "access-control",
+   "truth": "VULN",
+   "in_scope": true,
+   "source": "SWC-105 unprotected ether withdrawal"
+  },
+  {
+   "id": "A6r",
+   "file": "access.sol",
+   "contract": "Treasury",
+   "function": "withdrawAll",
+   "category": "reentrancy",
+   "truth": "SAFE",
+   "in_scope": true,
+   "source": "no state write after the call"
+  },
+  {
+   "id": "A7",
+   "file": "access.sol",
+   "contract": "Treasury",
+   "function": "withdraw",
+   "category": "access-control",
+   "truth": "SAFE",
+   "in_scope": true,
+   "source": "user withdraws own credit"
+  },
+  {
+   "id": "A7r",
+   "file": "access.sol",
+   "contract": "Treasury",
+   "function": "withdraw",
+   "category": "reentrancy",
+   "truth": "SAFE",
+   "in_scope": true,
+   "source": "CEI"
+  },
+  {
+   "id": "A8",
+   "file": "access.sol",
+   "contract": "Names",
+   "function": "setMyName",
+   "category": "access-control",
+   "truth": "SAFE",
+   "in_scope": true,
+   "source": "user-owned mapping"
+  },
+  {
+   "id": "A9",
+   "file": "access.sol",
+   "contract": "Coin",
+   "function": "mint",
+   "category": "access-control",
+   "truth": "VULN",
+   "in_scope": true,
+   "source": "free mint"
+  },
+  {
+   "id": "A10",
+   "file": "access.sol",
+   "contract": "Coin",
+   "function": "mintGated",
+   "category": "access-control",
+   "truth": "SAFE",
+   "in_scope": true,
+   "source": "hasRole check (AccessControl imported)"
+  },
+  {
+   "id": "V3",
+   "file": "access.sol",
+   "contract": "FallbackOwner",
+   "function": "fallback",
+   "category": "access-control",
+   "truth": "VULN",
+   "in_scope": true,
+   "source": "fallback sets owner"
+  },
+  {
+   "id": "V1",
+   "file": "access.sol",
+   "contract": "Commented",
+   "function": "ping",
+   "category": "access-control",
+   "truth": "SAFE",
+   "in_scope": true,
+   "source": "selfdestruct only in a comment"
+  },
+  {
+   "id": "V1c",
+   "file": "access.sol",
+   "contract": "Commented",
+   "function": "ping",
+   "category": "unchecked-call",
+   "truth": "SAFE",
+   "in_scope": true,
+   "source": ".call only in a string"
+  },
+  {
+   "id": "A2",
+   "file": "access_legacy.sol",
+   "contract": "Rubixi",
+   "function": "DynamicPyramid",
+   "category": "access-control",
+   "truth": "VULN",
+   "in_scope": true,
+   "source": "SWC-118 Rubixi wrong constructor name"
+  },
+  {
+   "id": "A2s",
+   "file": "access_legacy.sol",
+   "contract": "Rubixi",
+   "function": "collectAllFees",
+   "category": "access-control",
+   "truth": "SAFE",
+   "in_scope": true,
+   "source": "require(msg.sender == creator)"
+  },
+  {
+   "id": "T1",
+   "file": "txorigin_init.sol",
+   "contract": "Wallet",
+   "function": "transferTo",
+   "category": "tx-origin",
+   "truth": "VULN",
+   "in_scope": true,
+   "source": "SWC-115"
+  },
+  {
+   "id": "T1f",
+   "file": "txorigin_init.sol",
+   "contract": "Wallet",
+   "function": "transferToFixed",
+   "category": "tx-origin",
+   "truth": "SAFE",
+   "in_scope": true,
+   "source": "msg.sender"
+  },
+  {
+   "id": "T2",
+   "file": "txorigin_init.sol",
+   "contract": "Faucet",
+   "function": "drip",
+   "category": "tx-origin",
+   "truth": "SAFE",
+   "in_scope": true,
+   "source": "EOA check + tx.origin only logged"
+  },
+  {
+   "id": "I1",
+   "file": "txorigin_init.sol",
+   "contract": "VaultImpl",
+   "function": "initialize",
+   "category": "unprotected-init",
+   "truth": "VULN",
+   "in_scope": true,
+   "source": "unprotected initializer"
+  },
+  {
+   "id": "I1f",
+   "file": "txorigin_init.sol",
+   "contract": "VaultImplFixed",
+   "function": "initialize",
+   "category": "unprotected-init",
+   "truth": "SAFE",
+   "in_scope": true,
+   "source": "OZ initializer modifier (imported)"
+  },
+  {
+   "id": "I2",
+   "file": "txorigin_init.sol",
+   "contract": "ManualInit",
+   "function": "init",
+   "category": "unprotected-init",
+   "truth": "SAFE",
+   "in_scope": true,
+   "source": "manual one-time flag"
+  },
+  {
+   "id": "I3",
+   "file": "txorigin_init.sol",
+   "contract": "ForgetfulInit",
+   "function": "init",
+   "category": "unprotected-init",
+   "truth": "VULN",
+   "in_scope": true,
+   "source": "flag checked but never set"
+  },
+  {
+   "id": "I4",
+   "file": "txorigin_init.sol",
+   "contract": "InternalInit",
+   "function": "_init",
+   "category": "unprotected-init",
+   "truth": "SAFE",
+   "in_scope": true,
+   "source": "internal function"
+  },
+  {
+   "id": "C1",
+   "file": "calls.sol",
+   "contract": "Sender",
+   "function": "payOut",
+   "category": "unchecked-call",
+   "truth": "VULN",
+   "in_scope": true,
+   "source": "SWC-104 send ignored"
+  },
+  {
+   "id": "C1f",
+   "file": "calls.sol",
+   "contract": "Sender",
+   "function": "payOutChecked",
+   "category": "unchecked-call",
+   "truth": "SAFE",
+   "in_scope": true,
+   "source": "require(send)"
+  },
+  {
+   "id": "C2",
+   "file": "calls.sol",
+   "contract": "Sender",
+   "function": "payLogged",
+   "category": "unchecked-call",
+   "truth": "VULN",
+   "in_scope": true,
+   "source": "flag only emitted"
+  },
+  {
+   "id": "C3",
+   "file": "calls.sol",
+   "contract": "Sender",
+   "function": "forward",
+   "category": "unchecked-call",
+   "truth": "SAFE",
+   "in_scope": true,
+   "source": "if (!ok) revert"
+  },
+  {
+   "id": "C4",
+   "file": "calls.sol",
+   "contract": "Sender",
+   "function": "poke",
+   "category": "unchecked-call",
+   "truth": "VULN",
+   "in_scope": true,
+   "source": "result discarded"
+  },
+  {
+   "id": "C5",
+   "file": "calls.sol",
+   "contract": "Sender",
+   "function": "payReq",
+   "category": "unchecked-call",
+   "truth": "SAFE",
+   "in_scope": true,
+   "source": "require(ok, msg)"
+  },
+  {
+   "id": "C6",
+   "file": "calls.sol",
+   "contract": "Sender",
+   "function": "tryPay",
+   "category": "unchecked-call",
+   "truth": "AMBIGUOUS",
+   "in_scope": true,
+   "source": "flag returned to callers"
+  },
+  {
+   "id": "V2",
+   "file": "calls.sol",
+   "contract": "Sender",
+   "function": "rawPay",
+   "category": "unchecked-call",
+   "truth": "VULN",
+   "in_scope": true,
+   "source": "assembly call result unused"
+  },
+  {
+   "id": "D2",
+   "file": "calls.sol",
+   "contract": "Sender",
+   "function": "viaImpl",
+   "category": "delegatecall",
+   "truth": "SAFE",
+   "in_scope": true,
+   "source": "immutable target + onlyOwner"
+  },
+  {
+   "id": "D1",
+   "file": "calls.sol",
+   "contract": "Proxyish",
+   "function": "exec",
+   "category": "delegatecall",
+   "truth": "VULN",
+   "in_scope": true,
+   "source": "SWC-112 caller-chosen target"
+  },
+  {
+   "id": "D1f",
+   "file": "calls.sol",
+   "contract": "Proxyish",
+   "function": "execOwner",
+   "category": "delegatecall",
+   "truth": "SAFE",
+   "in_scope": true,
+   "source": "require(msg.sender == owner)"
+  },
+  {
+   "id": "D3",
+   "file": "calls.sol",
+   "contract": "LibUser",
+   "function": "setLib",
+   "category": "access-control",
+   "truth": "VULN",
+   "in_scope": true,
+   "source": "Parity-style unprotected library setter"
+  },
+  {
+   "id": "D3r",
+   "file": "calls.sol",
+   "contract": "LibUser",
+   "function": "run",
+   "category": "delegatecall",
+   "truth": "VULN",
+   "in_scope": false,
+   "source": "target from storage set by anyone (cross-function)"
+  },
+  {
+   "id": "M2",
+   "file": "arith.sol",
+   "contract": "Ledger08",
+   "function": "move",
+   "category": "arithmetic",
+   "truth": "SAFE",
+   "in_scope": true,
+   "source": "0.8 checked"
+  },
+  {
+   "id": "M3",
+   "file": "arith.sol",
+   "contract": "Ledger08",
+   "function": "moveFast",
+   "category": "arithmetic",
+   "truth": "VULN",
+   "in_scope": true,
+   "source": "SWC-101 unchecked underflow"
+  },
+  {
+   "id": "M3f",
+   "file": "arith.sol",
+   "contract": "Ledger08",
+   "function": "moveFastChecked",
+   "category": "arithmetic",
+   "truth": "SAFE",
+   "in_scope": true,
+   "source": "bound checked before unchecked"
+  },
+  {
+   "id": "M4",
+   "file": "arith.sol",
+   "contract": "Ledger08",
+   "function": "sum",
+   "category": "arithmetic",
+   "truth": "SAFE",
+   "in_scope": true,
+   "source": "unchecked ++i loop counter"
+  },
+  {
+   "id": "M1",
+   "file": "arith_legacy.sol",
+   "contract": "Token04",
+   "function": "transfer",
+   "category": "arithmetic",
+   "truth": "VULN",
+   "in_scope": true,
+   "source": "SWC-101 BEC-style 0.4 underflow"
+  },
+  {
+   "id": "M1f",
+   "file": "arith_legacy.sol",
+   "contract": "Token04",
+   "function": "transferChecked",
+   "category": "arithmetic",
+   "truth": "SAFE",
+   "in_scope": true,
+   "source": "require bounds before arithmetic"
+  },
+  {
+   "id": "M5",
+   "file": "arith_range.sol",
+   "contract": "RangeCounter",
+   "function": "add",
+   "category": "arithmetic",
+   "truth": "AMBIGUOUS",
+   "in_scope": true,
+   "source": "pragma admits 0.7 and 0.8"
+  },
+  {
+   "id": "O1",
+   "file": "out_of_scope.sol",
+   "contract": "Lottery",
+   "function": "pick",
+   "category": "randomness",
+   "truth": "VULN",
+   "in_scope": false,
+   "source": "SWC-120"
+  },
+  {
+   "id": "O1a",
+   "file": "out_of_scope.sol",
+   "contract": "Lottery",
+   "function": "pick",
+   "category": "access-control",
+   "truth": "AMBIGUOUS",
+   "in_scope": true,
+   "source": "public draw is a design choice"
+  },
+  {
+   "id": "O2",
+   "file": "out_of_scope.sol",
+   "contract": "Voucher",
+   "function": "claim",
+   "category": "signature-replay",
+   "truth": "VULN",
+   "in_scope": false,
+   "source": "SWC-121"
+  }
+ ]
+}

@@ -1,0 +1,48 @@
+{
+ "format": "web-capture/1",
+ "exchanges": [
+  {
+   "request": {
+    "method": "GET",
+    "url": "https://w24.test/api/me",
+    "headers": {
+     "Origin": "null"
+    }
+   },
+   "response": {
+    "status": 200,
+    "headers": [
+     [
+      "Strict-Transport-Security",
+      "max-age=31536000; includeSubDomains"
+     ],
+     [
+      "Content-Security-Policy",
+      "default-src 'self'; script-src 'self' 'nonce-r4nd0m'; frame-ancestors 'none'"
+     ],
+     [
+      "X-Content-Type-Options",
+      "nosniff"
+     ],
+     [
+      "Referrer-Policy",
+      "strict-origin-when-cross-origin"
+     ],
+     [
+      "Access-Control-Allow-Origin",
+      "null"
+     ],
+     [
+      "Access-Control-Allow-Credentials",
+      "true"
+     ],
+     [
+      "Content-Type",
+      "application/json"
+     ]
+    ],
+    "body": "{\"user\": \"x\"}"
+   }
+  }
+ ]
+}

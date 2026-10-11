@@ -1,0 +1,5 @@
+# url: https://app.example.test/y
+HTTP/1.1 500 X
+Content-Type: text/html; charset=utf-8
+
+<html><head><title>KeyError // Werkzeug Debugger</title></head><body>The debugger caught an exception in your WSGI application.</body></html>

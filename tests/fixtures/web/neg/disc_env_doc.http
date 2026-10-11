@@ -1,0 +1,13 @@
+# url: https://app.example.test/README.txt
+HTTP/1.1 200 X
+Content-Type: text/plain
+Strict-Transport-Security: max-age=63072000; includeSubDomains
+X-Content-Type-Options: nosniff
+
+Configuration guide
+
+Set the variables described below before starting the service.
+For example PORT=8080 selects the listening port.
+The service reads its settings at startup and logs them.
+See the operations manual for the full list of options.
+DEBUG=false

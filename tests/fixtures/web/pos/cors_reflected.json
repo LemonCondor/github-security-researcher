@@ -1,0 +1,44 @@
+{
+ "format": "web-capture/1",
+ "exchanges": [
+  {
+   "request": {
+    "method": "GET",
+    "url": "https://app.example.test/api/data",
+    "headers": {
+     "Origin": "https://attacker.example.net"
+    }
+   },
+   "response": {
+    "status": 200,
+    "headers": [
+     [
+      "Content-Type",
+      "application/json"
+     ],
+     [
+      "Strict-Transport-Security",
+      "max-age=63072000; includeSubDomains"
+     ],
+     [
+      "X-Content-Type-Options",
+      "nosniff"
+     ],
+     [
+      "Access-Control-Allow-Origin",
+      "https://attacker.example.net"
+     ],
+     [
+      "Access-Control-Allow-Credentials",
+      "true"
+     ],
+     [
+      "Vary",
+      "Origin"
+     ]
+    ],
+    "body": "{}"
+   }
+  }
+ ]
+}

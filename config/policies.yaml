@@ -1,0 +1,20 @@
+# Global kill-switches. A target-level flag can only narrow these, never widen.
+allow_pr_creation: false
+allow_issue_creation: false
+allow_comment_creation: false
+
+# Findings below this score never leave the "human review" state.
+pr_confidence_threshold: 0.85
+
+scanners:
+  enabled: [semgrep, gitleaks, osv, go_dataflow]   # go_dataflow: local tree-sitter parse, no execution
+  # Internal taint rules always run. Registry packs are fetched from semgrep.dev (network).
+  semgrep_registry_packs: [p/golang]   # fetched from semgrep.dev (rules only, no target interaction)
+
+clone:
+  max_repo_size_mb: 500
+  depth: 50
+
+llm:
+  # Local Claude Code CLI session (no API key). null = session default model.
+  model: null

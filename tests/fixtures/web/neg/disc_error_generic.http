@@ -1,0 +1,5 @@
+# url: https://app.example.test/z
+HTTP/1.1 500 X
+Content-Type: text/html; charset=utf-8
+
+<html><body><h1>Something went wrong</h1><p>Reference: 7f3a9c</p></body></html>

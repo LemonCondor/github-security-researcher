@@ -1,0 +1,234 @@
+{
+ "neg/cookie_safe.http": [],
+ "neg/cors_same_origin.http": [],
+ "neg/cors_static_allowlist.json": [],
+ "neg/cors_wildcard_public.http": [],
+ "neg/disc_blog_traceback.http": [],
+ "neg/disc_env_doc.http": [],
+ "neg/disc_error_generic.http": [],
+ "neg/disc_runtime_words_404.http": [],
+ "neg/disc_server_generic.http": [],
+ "neg/hardened.http": [],
+ "neg/hdr_csp_strict_dynamic.http": [],
+ "neg/hdr_csp_unsafe_inline_nonce.http": [],
+ "neg/hdr_frame_xfo.http": [],
+ "neg/hdr_referrer_meta.http": [],
+ "neg/js_cdn_ranges.html": [],
+ "neg/js_jquery_current.js": [],
+ "neg/js_moment_locale.js": [],
+ "neg/js_moment_timezone.js": [],
+ "neg/js_page_current.html": [],
+ "neg/js_sourcemap_inline.js": [],
+ "neg/js_version_mentions.js": [],
+ "neg/json_api.http": [],
+ "neg/redirect_chain.json": [],
+ "neg/redirect_cross_host_fixed.http": [],
+ "neg/redirect_http_to_https.http": [],
+ "neg/redirect_param_same_host.http": [],
+ "neg/secret_examples.js": [],
+ "neg/secret_pem_library_constants.js": [],
+ "pos/cookie_host_prefix.http": [
+  "web.cookie.prefix-violation"
+ ],
+ "pos/cookie_httponly_missing.http": [
+  "web.cookie.httponly-missing"
+ ],
+ "pos/cookie_samesite_missing.http": [
+  "web.cookie.samesite-missing"
+ ],
+ "pos/cookie_samesite_none_insecure.http": [
+  "web.cookie.samesite-none-insecure",
+  "web.cookie.secure-missing"
+ ],
+ "pos/cookie_secure_missing.http": [
+  "web.cookie.secure-missing"
+ ],
+ "pos/cookie_secure_prefix.http": [
+  "web.cookie.prefix-violation",
+  "web.cookie.secure-missing"
+ ],
+ "pos/cors_null.http": [
+  "web.cors.null-origin-credentials"
+ ],
+ "pos/cors_reflected.json": [
+  "web.cors.reflected-origin"
+ ],
+ "pos/cors_reflected_no_vary.http": [
+  "web.cors.reflected-origin"
+ ],
+ "pos/cors_wildcard_creds.http": [
+  "web.cors.wildcard-with-credentials"
+ ],
+ "pos/disc_dirlist.http": [
+  "web.disclosure.directory-listing"
+ ],
+ "pos/disc_django_debug.http": [
+  "web.disclosure.debug-page"
+ ],
+ "pos/disc_env.http": [
+  "web.disclosure.env-file"
+ ],
+ "pos/disc_git_config.http": [
+  "web.disclosure.git-metadata"
+ ],
+ "pos/disc_git_head.http": [
+  "web.disclosure.git-metadata"
+ ],
+ "pos/disc_go_panic.http": [
+  "web.disclosure.stack-trace"
+ ],
+ "pos/disc_java_stack.http": [
+  "web.disclosure.stack-trace"
+ ],
+ "pos/disc_php_error.http": [
+  "web.disclosure.stack-trace"
+ ],
+ "pos/disc_python_traceback.http": [
+  "web.disclosure.stack-trace"
+ ],
+ "pos/disc_ruby_backtrace.http": [
+  "web.disclosure.stack-trace"
+ ],
+ "pos/disc_rust_panic.http": [
+  "web.disclosure.stack-trace"
+ ],
+ "pos/disc_server_version.http": [
+  "web.disclosure.version-header"
+ ],
+ "pos/disc_werkzeug.http": [
+  "web.disclosure.debug-page"
+ ],
+ "pos/hdr_csp_https_scheme.http": [
+  "web.hdr.csp-wildcard-script"
+ ],
+ "pos/hdr_csp_missing.http": [
+  "web.hdr.csp-missing"
+ ],
+ "pos/hdr_csp_no_script_directive.http": [
+  "web.hdr.csp-wildcard-script"
+ ],
+ "pos/hdr_csp_report_only.http": [
+  "web.hdr.csp-missing"
+ ],
+ "pos/hdr_csp_unsafe_inline.http": [
+  "web.hdr.csp-unsafe-inline"
+ ],
+ "pos/hdr_csp_wildcard.http": [
+  "web.hdr.csp-wildcard-script"
+ ],
+ "pos/hdr_frame_missing.http": [
+  "web.hdr.frame-protection-missing"
+ ],
+ "pos/hdr_hsts_missing.http": [
+  "web.hdr.hsts-missing"
+ ],
+ "pos/hdr_hsts_short.http": [
+  "web.hdr.hsts-short-max-age"
+ ],
+ "pos/hdr_referrer_missing.http": [
+  "web.hdr.referrer-policy-missing"
+ ],
+ "pos/hdr_referrer_unsafe.http": [
+  "web.hdr.referrer-policy-unsafe"
+ ],
+ "pos/hdr_xcto_missing.http": [
+  "web.hdr.xcto-missing"
+ ],
+ "pos/hdr_xfo_allowfrom.http": [
+  "web.hdr.frame-protection-missing"
+ ],
+ "pos/js_angular_min_banner.js": [
+  "web.js.known-vulnerable-library"
+ ],
+ "pos/js_angular_old.js": [
+  "web.js.known-vulnerable-library"
+ ],
+ "pos/js_bootstrap3_banner.js": [
+  "web.js.known-vulnerable-library"
+ ],
+ "pos/js_jquery_old.js": [
+  "web.js.known-vulnerable-library"
+ ],
+ "pos/js_jquery_slim_banner.js": [
+  "web.js.known-vulnerable-library"
+ ],
+ "pos/js_jquery_unminified_banner.js": [
+  "web.js.known-vulnerable-library"
+ ],
+ "pos/js_lib_by_filename.http": [
+  "web.js.known-vulnerable-library"
+ ],
+ "pos/js_lodash3_banner.js": [
+  "web.js.known-vulnerable-library"
+ ],
+ "pos/js_lodash_min_banner.js": [
+  "web.js.known-vulnerable-library"
+ ],
+ "pos/js_lodash_old.js": [
+  "web.js.known-vulnerable-library"
+ ],
+ "pos/js_moment_banner_2_24.js": [
+  "web.js.known-vulnerable-library"
+ ],
+ "pos/js_moment_cdn.html": [
+  "web.js.known-vulnerable-library"
+ ],
+ "pos/js_moment_old.js": [
+  "web.js.known-vulnerable-library"
+ ],
+ "pos/js_page_scripts.html": [
+  "web.js.known-vulnerable-library"
+ ],
+ "pos/js_sourcemap.js": [
+  "web.disclosure.sourcemap-reference"
+ ],
+ "pos/js_sourcemap_header.http": [
+  "web.disclosure.sourcemap-reference"
+ ],
+ "pos/open_redirect.json": [
+  "web.redirect.open-redirect-candidate"
+ ],
+ "pos/open_redirect_protocol_relative.http": [
+  "web.redirect.open-redirect-candidate"
+ ],
+ "pos/redirect_downgrade.http": [
+  "web.redirect.https-downgrade"
+ ],
+ "pos/redirect_plain_http.http": [
+  "web.redirect.no-https-upgrade"
+ ],
+ "pos/secret_aws.js": [
+  "web.secret.aws-access-key-id"
+ ],
+ "pos/secret_github.html": [
+  "web.secret.github-token"
+ ],
+ "pos/secret_google.js": [
+  "web.secret.google-api-key"
+ ],
+ "pos/secret_private_key.html": [
+  "web.secret.private-key"
+ ],
+ "pos/secret_private_key_encrypted.js": [
+  "web.secret.private-key"
+ ],
+ "pos/secret_private_key_variants.js": [
+  "web.secret.private-key"
+ ],
+ "pos/secret_stripe.js": [
+  "web.secret.stripe-secret-key"
+ ],
+ "pos/site_capture.json": [
+  "web.cookie.httponly-missing",
+  "web.cookie.samesite-missing",
+  "web.cookie.secure-missing",
+  "web.disclosure.sourcemap-reference",
+  "web.disclosure.version-header",
+  "web.hdr.csp-missing",
+  "web.hdr.frame-protection-missing",
+  "web.hdr.hsts-missing",
+  "web.hdr.referrer-policy-missing",
+  "web.hdr.xcto-missing",
+  "web.js.known-vulnerable-library"
+ ]
+}

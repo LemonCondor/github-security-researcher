@@ -1,0 +1,93 @@
+{
+ "format": "web-capture/1",
+ "exchanges": [
+  {
+   "request": {
+    "method": "GET",
+    "url": "http://shop.example.test/",
+    "headers": {}
+   },
+   "response": {
+    "status": 301,
+    "headers": [
+     [
+      "Location",
+      "https://shop.example.test/"
+     ]
+    ],
+    "body": ""
+   }
+  },
+  {
+   "request": {
+    "method": "GET",
+    "url": "https://shop.example.test/",
+    "headers": {}
+   },
+   "response": {
+    "status": 200,
+    "headers": [
+     [
+      "Content-Type",
+      "text/html; charset=utf-8"
+     ],
+     [
+      "Server",
+      "nginx/1.14.0"
+     ],
+     [
+      "Set-Cookie",
+      "PHPSESSID=abc123; path=/"
+     ]
+    ],
+    "body": "<!doctype html><html><head><script src=\"/js/jquery-1.11.0.min.js\"></script></head><body>shop</body></html>"
+   }
+  },
+  {
+   "request": {
+    "method": "GET",
+    "url": "https://shop.example.test/js/jquery-1.11.0.min.js",
+    "headers": {}
+   },
+   "response": {
+    "status": 200,
+    "headers": [
+     [
+      "Content-Type",
+      "application/javascript"
+     ],
+     [
+      "Strict-Transport-Security",
+      "max-age=63072000; includeSubDomains"
+     ],
+     [
+      "X-Content-Type-Options",
+      "nosniff"
+     ]
+    ],
+    "body": "/*! jQuery v1.11.0 | (c) 2005, 2014 jQuery Foundation */\n!function(){}();\n//# sourceMappingURL=jquery.min.map\n"
+   }
+  },
+  {
+   "request": {
+    "method": "GET",
+    "url": "https://shop.example.test/cart",
+    "headers": {}
+   },
+   "response": {
+    "status": 200,
+    "headers": [
+     [
+      "Content-Type",
+      "text/html; charset=utf-8"
+     ],
+     [
+      "Server",
+      "nginx/1.14.0"
+     ]
+    ],
+    "body": "<!doctype html><html><body>cart</body></html>"
+   }
+  }
+ ]
+}

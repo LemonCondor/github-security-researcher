@@ -1,0 +1,13 @@
+# Gitleaks configuration for this repository.
+# The default rules apply everywhere, except to the SYNTHETIC secret-like strings that exercise GSR's own
+# secret detectors (web.passive, gitleaks adapter, validation corpora). Those values are fake by construction.
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Synthetic secret-like fixtures used by GSR tests"
+paths = [
+  '''^tests/fixtures/''',
+  '''^tests/test_engine_validation\.py$''',
+  '''^tests/test_web_passive\.py$''',
+]

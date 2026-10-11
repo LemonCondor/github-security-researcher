@@ -1,0 +1,13 @@
+# url: https://w28.test/blog/debugging
+# method: GET
+HTTP/1.1 200 OK
+Strict-Transport-Security: max-age=31536000; includeSubDomains
+Content-Security-Policy: default-src 'self'; script-src 'self' 'nonce-r4nd0m'; frame-ancestors 'none'
+X-Content-Type-Options: nosniff
+Referrer-Policy: strict-origin-when-cross-origin
+Content-Type: text/html
+
+<html><body><h1>How to read a traceback</h1><pre>Traceback (most recent call last):
+  File "app.py", line 3, in &lt;module&gt;
+    main()
+ZeroDivisionError: division by zero</pre></body></html>

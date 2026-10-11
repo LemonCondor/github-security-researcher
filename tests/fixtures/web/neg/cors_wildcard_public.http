@@ -1,0 +1,8 @@
+# url: https://app.example.test/api/data
+HTTP/1.1 200 X
+Content-Type: application/json
+Strict-Transport-Security: max-age=63072000; includeSubDomains
+X-Content-Type-Options: nosniff
+Access-Control-Allow-Origin: *
+
+{}

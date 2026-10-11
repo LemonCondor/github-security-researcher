@@ -1,0 +1,11 @@
+# url: https://w31.test/docs/configuration
+# method: GET
+HTTP/1.1 200 OK
+Strict-Transport-Security: max-age=31536000; includeSubDomains
+Content-Security-Policy: default-src 'self'; script-src 'self' 'nonce-r4nd0m'; frame-ancestors 'none'
+X-Content-Type-Options: nosniff
+Referrer-Policy: strict-origin-when-cross-origin
+Content-Type: text/html
+
+<html><body><h1>Configuration</h1><p>Create a <code>.env</code> file:</p><pre><code>DB_PASSWORD=changeme
+APP_ENV=local</code></pre></body></html>

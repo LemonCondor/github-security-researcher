@@ -1,0 +1,26 @@
+{
+ "format": "web-capture/1",
+ "exchanges": [
+  {
+   "request": {
+    "method": "GET",
+    "url": "https://app.example.test/login?next=https%3A%2F%2Fevil.example.net%2Fphish",
+    "headers": {}
+   },
+   "response": {
+    "status": 302,
+    "headers": [
+     [
+      "Location",
+      "https://evil.example.net/phish"
+     ],
+     [
+      "Strict-Transport-Security",
+      "max-age=63072000; includeSubDomains"
+     ]
+    ],
+    "body": ""
+   }
+  }
+ ]
+}

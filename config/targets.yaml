@@ -1,0 +1,21 @@
+# Explicit scope. Nothing outside `targets` is ever cloned or scanned.
+# Each third-party target MUST cite the published policy authorizing research
+# (bug bounty scope, SECURITY.md, vulnerability disclosure program).
+#
+# disclosure:
+#   report_only      -> local report only (default)
+#   private_advisory -> GitHub private vulnerability reporting / bounty platform
+#   pull_request     -> public PR (only for non-sensitive hardening, or your own repos)
+#
+# Example (copy, adapt, and verify the program scope yourself before scanning):
+# - owner: example
+#   repository: example-repository
+#   branch: main                      # or `commit: <sha>` to pin a release
+#   policy_reference: https://github.com/example/example-repository/security/policy
+#   disclosure: report_only
+#   allow_pull_requests: false
+
+targets: []
+
+# Repositories that must never be cloned or scanned, even if listed above (blocked always wins).
+blocked_targets: []

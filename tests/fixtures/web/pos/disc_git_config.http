@@ -1,0 +1,12 @@
+# url: https://app.example.test/.git/config
+HTTP/1.1 200 X
+Content-Type: text/plain
+Strict-Transport-Security: max-age=63072000; includeSubDomains
+X-Content-Type-Options: nosniff
+
+[core]
+	repositoryformatversion = 0
+	filemode = true
+	bare = false
+[remote "origin"]
+	url = git@example.test:org/app.git

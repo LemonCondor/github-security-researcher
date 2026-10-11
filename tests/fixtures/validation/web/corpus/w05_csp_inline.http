@@ -1,0 +1,10 @@
+# url: https://w05.test/
+# method: GET
+HTTP/1.1 200 OK
+Strict-Transport-Security: max-age=31536000
+Content-Type: text/html
+Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline'; frame-ancestors 'self'
+X-Content-Type-Options: nosniff
+Referrer-Policy: same-origin
+
+<html><head><title>t</title></head><body>ok</body></html>

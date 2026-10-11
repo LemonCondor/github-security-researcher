@@ -1,0 +1,9 @@
+# url: https://app.example.test/backup/
+HTTP/1.1 200 X
+Content-Type: text/html; charset=utf-8
+Strict-Transport-Security: max-age=63072000; includeSubDomains
+Content-Security-Policy: default-src 'self'; script-src 'self' 'nonce-r4nd0m'; frame-ancestors 'none'; object-src 'none'
+X-Content-Type-Options: nosniff
+Referrer-Policy: strict-origin-when-cross-origin
+
+<html><head><title>Index of /backup</title></head><body><h1>Index of /backup</h1><a href="../">Parent Directory</a> <a href="db.sql.gz">db.sql.gz</a></body></html>

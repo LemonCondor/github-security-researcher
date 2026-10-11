@@ -1,0 +1,3 @@
+const pub = `-----BEGIN PUBLIC KEY-----
+MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsynthetic0000
+-----END PUBLIC KEY-----`;

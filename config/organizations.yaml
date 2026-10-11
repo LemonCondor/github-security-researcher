@@ -1,0 +1,30 @@
+# Organisations whose PUBLIC repository metadata may be collected by `github-sec discover`.
+# Discovery is read-only: it never clones, scans, comments, opens issues/PRs or adds scan targets.
+# A repository approved after discovery is only a human decision; config/targets.yaml stays the scan scope.
+# category: science_agency | public_admin | company | foundation | community
+organizations:
+  # Scientific and space agencies
+  - {login: nasa, category: science_agency, label: NASA}
+  - {login: esa, category: science_agency, label: ESA}
+  - {login: CNES, category: science_agency, label: CNES}
+  - {login: NOAA-EMC, category: science_agency, label: "NOAA Environmental Modeling Center"}
+  # French public administration
+  - {login: numerique-gouv, category: public_admin, label: DINUM}
+  - {login: etalab, category: public_admin, label: Etalab}
+  - {login: betagouv, category: public_admin, label: "beta.gouv.fr"}
+  - {login: SocialGouv, category: public_admin, label: "Ministères sociaux"}
+  - {login: MTES-MCT, category: public_admin, label: "Ministère de la Transition écologique"}
+  # Technology companies
+  - {login: microsoft, category: company, label: Microsoft}
+  - {login: google, category: company, label: Google}
+  - {login: aws, category: company, label: "Amazon Web Services"}
+  - {login: cloudflare, category: company, label: Cloudflare}
+  - {login: RedHatOfficial, category: company, label: "Red Hat"}
+  - {login: canonical, category: company, label: Canonical}
+  - {login: IBM, category: company, label: IBM}
+  # Foundations and infrastructure communities
+  - {login: kubernetes, category: foundation, label: Kubernetes}
+  - {login: cncf, category: foundation, label: CNCF}
+  - {login: apache, category: foundation, label: "Apache Software Foundation"}
+  - {login: linuxfoundation, category: foundation, label: "Linux Foundation"}
+  - {login: mozilla, category: foundation, label: Mozilla}

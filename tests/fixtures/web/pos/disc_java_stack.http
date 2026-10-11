@@ -1,0 +1,8 @@
+# url: https://app.example.test/j
+HTTP/1.1 500 X
+Content-Type: text/html; charset=utf-8
+
+<pre>java.lang.NullPointerException
+	at com.example.web.UserController.show(UserController.java:57)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:897)
+</pre>

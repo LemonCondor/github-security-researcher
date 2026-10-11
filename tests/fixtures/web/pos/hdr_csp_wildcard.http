@@ -1,0 +1,9 @@
+# url: https://app.example.test/
+HTTP/1.1 200 X
+Content-Type: text/html; charset=utf-8
+Strict-Transport-Security: max-age=63072000; includeSubDomains
+Content-Security-Policy: default-src 'self'; script-src *; frame-ancestors 'self'
+X-Content-Type-Options: nosniff
+Referrer-Policy: strict-origin-when-cross-origin
+
+<!doctype html><html><head><title>App</title></head><body><p>hello</p></body></html>

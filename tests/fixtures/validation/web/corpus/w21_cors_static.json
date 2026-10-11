@@ -1,0 +1,52 @@
+{
+ "format": "web-capture/1",
+ "exchanges": [
+  {
+   "request": {
+    "method": "GET",
+    "url": "https://w21.test/api/me",
+    "headers": {
+     "Origin": "https://evil.example"
+    }
+   },
+   "response": {
+    "status": 200,
+    "headers": [
+     [
+      "Strict-Transport-Security",
+      "max-age=31536000; includeSubDomains"
+     ],
+     [
+      "Content-Security-Policy",
+      "default-src 'self'; script-src 'self' 'nonce-r4nd0m'; frame-ancestors 'none'"
+     ],
+     [
+      "X-Content-Type-Options",
+      "nosniff"
+     ],
+     [
+      "Referrer-Policy",
+      "strict-origin-when-cross-origin"
+     ],
+     [
+      "Access-Control-Allow-Origin",
+      "https://app.w21.test"
+     ],
+     [
+      "Access-Control-Allow-Credentials",
+      "true"
+     ],
+     [
+      "Vary",
+      "Origin"
+     ],
+     [
+      "Content-Type",
+      "application/json"
+     ]
+    ],
+    "body": "{\"user\": \"x\"}"
+   }
+  }
+ ]
+}

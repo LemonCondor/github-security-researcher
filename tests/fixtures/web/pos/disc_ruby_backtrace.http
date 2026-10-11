@@ -1,0 +1,7 @@
+# url: https://app.example.test/rb
+HTTP/1.1 500 X
+Content-Type: text/plain
+
+NoMethodError (undefined method `name' for nil:NilClass):
+/srv/app/app/controllers/users_controller.rb:12:in `show'
+/usr/local/bundle/gems/actionpack-6.1.4/lib/action_controller/metal/basic_implicit_render.rb:6:in `send_action'

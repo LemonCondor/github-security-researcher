@@ -1,0 +1,8 @@
+# url: https://app.example.test/api
+HTTP/1.1 500 X
+Content-Type: text/plain
+
+Traceback (most recent call last):
+  File "/srv/app/views.py", line 42, in handler
+    row = db[key]
+KeyError: 'user'
