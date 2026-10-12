@@ -20,12 +20,12 @@ Real bugs found with GSR (or with the fuzzing and property tests built alongside
 test, fixed with a minimal patch and a regression test, and submitted under each project's contribution rules.
 These are functional and robustness bugs, not security vulnerabilities.
 
-| Project | Fix | Status (2026-10-11) |
+| Project | Fix | Status (2026-10-12) |
 |---|---|---|
 | Kubernetes git-sync | panic on a git config key without a value — [#1006](https://github.com/kubernetes/git-sync/pull/1006) | merged |
 | Google gVisor | ignored lock error in `Container.Update` — [#15632](https://github.com/google/gvisor/pull/15632) | approved |
 | Canonical LXD | User-Agent parser panic — [#19250](https://github.com/canonical/lxd/pull/19250) | approved |
-| NASA F´ (fprime-tools) | auto-merge rejected valid C++ — [issue #6176](https://github.com/nasa/fprime/issues/6176), [#356](https://github.com/nasa/fprime-tools/pull/356) | in review |
+| NASA F´ (fprime-tools) | auto-merge rejected valid C++ — [issue #6176](https://github.com/nasa/fprime/issues/6176), [#356](https://github.com/nasa/fprime-tools/pull/356) | closed (experimental feature, not planned) |
 | data.gouv.fr (udata) | undashed dates parsed as a whole year — [#4007](https://github.com/opendatateam/udata/pull/4007) | in review |
 | Prometheus node_exporter, procfs, mysqld_exporter | `/proc` and binlog parsers — [#3848](https://github.com/prometheus/node_exporter/pull/3848), [#880](https://github.com/prometheus/procfs/pull/880), [#1095](https://github.com/prometheus/mysqld_exporter/pull/1095) | in review |
 | Google cAdvisor, Kubernetes kube-state-metrics | [#3947](https://github.com/google/cadvisor/pull/3947), [#3143](https://github.com/kubernetes/kube-state-metrics/pull/3143) | in review |
