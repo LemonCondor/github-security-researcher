@@ -1,0 +1,13 @@
+Bug families that maintainers merged from us (real user impact, small fix):
+- Cache key built from values without names/separators -> two different calls share one cache entry (pynsee).
+- Parsing stops at the FIRST separator instead of the last (dotted base names -> wrong number) (mysqld_exporter).
+- Regex precedence: /^a|b$/ anchors only one side (nasa/harmony).
+- Index past the end of a split/regex match on unusual but valid input -> crash (procfs).
+- Error ignored or overwritten, then success reported (gVisor).
+- Variable/template not expanded in a nested scope (GoReleaser).
+- Off-by-one on optional terminators: last row/item dropped when the optional END marker is absent (astropy tdat).
+- Number formats valid in the language rejected by a hand-written parser (exponent without dot, str(1e-05)).
+- Timezone/locale: naive datetime treated as local vs UTC, DST, Expires headers not in GMT (Powertools).
+- Rounding/float accumulation in arithmetic helpers (Pillow IFDRational).
+- Wrong slice length on a pattern suffix ([:-6] vs real suffix length) (Powertools AppSync).
+- Round-trip loss: write then read does not return the same value (FITS trailing '&').

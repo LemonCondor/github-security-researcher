@@ -6,6 +6,7 @@ import json
 import shutil
 import subprocess
 import sys
+from pathlib import Path
 
 from . import config as cfg
 from . import observability as obs
@@ -522,6 +523,22 @@ def cmd_discover(settings, args) -> int:
     return 0
 
 
+def cmd_hunt(settings, args) -> int:
+    """Agentic logic-bug hunt (claude -p with sandboxed tools). Leaves local branches only; never pushes."""
+    from .hunt import run as hunt_run
+    from .hunt.lang import Toolchain
+    opts = hunt_run.HuntOptions(files=args.files, budget_min=args.budget_min, lang=args.lang,
+                                toolchain=Toolchain(python=args.python, go=args.go, node=args.node),
+                                model=settings.policies.llm_model)
+    out_dir = Path(__file__).resolve().parents[2] / "data" / "hunts"
+    results, report = hunt_run.hunt(args.repo, Path(args.path).resolve(), opts, out_dir=out_dir)
+    for r in results:
+        where = f"{r.finding.file}:{r.finding.function}" if r.finding else r.target
+        print(f"{r.status:<18} {where} {r.branch or ''} {r.detail.splitlines()[0] if r.detail else ''}")
+    print(f"report: {report}")
+    return 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(prog="github-sec", description="Policy-gated GitHub security research")
     sub = p.add_subparsers(dest="command", required=True)
@@ -627,6 +644,16 @@ def build_parser() -> argparse.ArgumentParser:
     c.add_argument("--repo")
     c.add_argument("--limit", type=int, default=10)
     c.set_defaults(fn=cmd_review)
+    c = sub.add_parser("hunt", help="agentic logic-bug hunt on a local checkout (local branches only, no PR)")
+    c.add_argument("repo", help="owner/name")
+    c.add_argument("--path", required=True, help="local git checkout of the repo")
+    c.add_argument("--files", type=int, default=8)
+    c.add_argument("--budget-min", type=int, default=20)
+    c.add_argument("--lang", choices=["auto", "py", "go", "js"], default="auto")
+    c.add_argument("--python", default="python3")
+    c.add_argument("--go", default="go")
+    c.add_argument("--node", default="node")
+    c.set_defaults(fn=cmd_hunt)
     c = sub.add_parser("validate", help="static validation + verdict (never executes target code)")
     c.add_argument("id", nargs="?")
     c.add_argument("--repo")

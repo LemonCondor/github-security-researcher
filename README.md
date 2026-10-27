@@ -14,21 +14,45 @@ minimal patch over large refactor · real findings over false positives.
 GSR does **not** guarantee that it finds every vulnerability, and it does **not** guarantee the absence of
 false positives. It is a research aid that keeps a human in charge of every decision that leaves the machine.
 
+## Agentic logic-bug hunting — `gsr hunt`
+
+A newer engine turns the same discipline on **logic bugs** across Python, Go and JavaScript. It runs a tool-enabled
+model inside a throwaway git worktree with credentials stripped from the environment and network tools denied, and
+**every step is judged by code, never by the model**:
+
+1. **gates** — skip repositories that auto-close external PRs or ignore outside contributors;
+2. **targeting** — rank the source files most likely to hide a user-facing bug;
+3. **hunt** — the model reads the code and writes a reproduction that must *fail*;
+4. **proof** — the reproduction is re-run on a clean checkout and only counts if it fails on an assertion;
+5. **fix** — the model writes the fix and a regression test; code verifies it is **red without the fix, green with it**;
+6. **skeptic** — a second pass drops anything with no real user impact.
+
+The output is a ready-to-review **local branch**, never an automatic PR. On a blind replay against AWS Powertools,
+`gsr hunt` re-discovered two known bugs on its own and proved each fix (red→green) in about five minutes.
+
+```bash
+gsr hunt owner/name --path ./checkout
+```
+
 ## Results
 
 Real bugs found with GSR (or with the fuzzing and property tests built alongside it), each reproduced by a failing
 test, fixed with a minimal patch and a regression test, and submitted under each project's contribution rules.
 These are functional and robustness bugs, not security vulnerabilities.
 
-| Project | Fix | Status (2026-10-12) |
+| Project | Fix | Status |
 |---|---|---|
 | Kubernetes git-sync | panic on a git config key without a value — [#1006](https://github.com/kubernetes/git-sync/pull/1006) | merged |
-| Google gVisor | ignored lock error in `Container.Update` — [#15632](https://github.com/google/gvisor/pull/15632) | approved |
-| Canonical LXD | User-Agent parser panic — [#19250](https://github.com/canonical/lxd/pull/19250) | approved |
-| NASA F´ (fprime-tools) | auto-merge rejected valid C++ — [issue #6176](https://github.com/nasa/fprime/issues/6176), [#356](https://github.com/nasa/fprime-tools/pull/356) | closed (experimental feature, not planned) |
-| data.gouv.fr (udata) | undashed dates parsed as a whole year — [#4007](https://github.com/opendatateam/udata/pull/4007) | in review |
-| Prometheus node_exporter, procfs, mysqld_exporter | `/proc` and binlog parsers — [#3848](https://github.com/prometheus/node_exporter/pull/3848), [#880](https://github.com/prometheus/procfs/pull/880), [#1095](https://github.com/prometheus/mysqld_exporter/pull/1095) | in review |
-| Google cAdvisor, Kubernetes kube-state-metrics | [#3947](https://github.com/google/cadvisor/pull/3947), [#3143](https://github.com/kubernetes/kube-state-metrics/pull/3143) | in review |
+| Google gVisor | ignored lock error in `Container.Update` — [#15632](https://github.com/google/gvisor/pull/15632) | merged |
+| AWS Powertools | AppSync Events wildcard route matched sibling channels — [#8546](https://github.com/aws-powertools/powertools-lambda-python/pull/8546) | merged |
+| OpenTelemetry Python | Jaeger propagator rejected URL-encoded `uber-trace-id` — [#5793](https://github.com/open-telemetry/opentelemetry-python/pull/5793) | merged |
+| Prometheus procfs | panic on short lines in `/proc` and `/sys` parsers — [#880](https://github.com/prometheus/procfs/pull/880) | merged |
+| Prometheus mysqld_exporter | wrong binlog file number for names with dots — [#1095](https://github.com/prometheus/mysqld_exporter/pull/1095) | merged |
+| pydata xarray | string dimension names lost their suffix — [#11757](https://github.com/pydata/xarray/pull/11757) | merged |
+| Celery | chain/group `repr` mangled task names and arguments — [#10855](https://github.com/celery/celery/pull/10855) | merged |
+| Pillow | arithmetic between two TIFF `IFDRational` values failed — [#10321](https://github.com/python-pillow/Pillow/pull/10321) | merged |
+| GoReleaser | nested Dockerfile `ARG` not expanded in the base image — [#7203](https://github.com/goreleaser/goreleaser/pull/7203) | merged |
+| INSEE pynsee | cache key mixed up `startPeriod`/`endPeriod` queries — [#311](https://github.com/InseeFrLab/pynsee/pull/311) | merged |
 
 ## Contents
 

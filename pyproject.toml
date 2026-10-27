@@ -17,6 +17,9 @@ analysis = ["tree-sitter>=0.23", "tree-sitter-go>=0.23", "tree-sitter-solidity>=
 [project.scripts]
 github-sec = "github_security.cli:main"
 
+[tool.setuptools.package-data]
+"github_security.hunt" = ["families.md"]
+
 [tool.setuptools.packages.find]
 where = ["src"]
 
