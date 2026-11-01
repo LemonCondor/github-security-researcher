@@ -358,6 +358,153 @@ CREATE INDEX IF NOT EXISTS ix_disc_repos_org ON disc_repos(org_login, recommenda
 CREATE INDEX IF NOT EXISTS ix_disc_events_subject ON disc_events(subject);
 """
 
+# Deployment-aware triage, milestone 1 (deployment mapper). Independent tables, never joined into
+# findings/bugs/discovery. Purely additive CREATE TABLE IF NOT EXISTS: no schema_version bump needed.
+# Observations are append-only (a later block adds a row, nothing is overwritten); every row keeps its
+# certainty and its sources (JSON list). UNKNOWN is never stored as a negative.
+DEPLOY_DDL = """
+CREATE TABLE IF NOT EXISTS deploy_programs (
+  id INTEGER PRIMARY KEY,
+  platform TEXT NOT NULL,
+  slug TEXT NOT NULL,
+  name TEXT NOT NULL,
+  max_bounty REAL,
+  kyc INTEGER,                                -- NULL = unknown
+  scope_sha256 TEXT NOT NULL,
+  scope_complete INTEGER NOT NULL,
+  source_url TEXT NOT NULL,
+  fetched_at TEXT NOT NULL,
+  UNIQUE (platform, slug)
+);
+
+CREATE TABLE IF NOT EXISTS deploy_assets (
+  id INTEGER PRIMARY KEY,
+  program_id INTEGER NOT NULL REFERENCES deploy_programs(id),
+  key TEXT NOT NULL,                          -- "<chain>:<address>" or "url:<url>"
+  asset_kind TEXT NOT NULL CHECK (asset_kind IN ('contract','source_reference','non_contract','incomplete')),
+  chain_id INTEGER,
+  address TEXT,
+  names TEXT NOT NULL DEFAULT '[]',
+  urls TEXT NOT NULL DEFAULT '[]',
+  added_at TEXT,
+  is_primacy_of_impact INTEGER,               -- NULL = unknown or contradictory
+  chain_certainty TEXT NOT NULL CHECK (chain_certainty IN ('VERIFIED','INFERRED','UNKNOWN','CONFLICTING')),
+  certainty TEXT NOT NULL CHECK (certainty IN ('VERIFIED','INFERRED','UNKNOWN','CONFLICTING')),
+  sources TEXT NOT NULL DEFAULT '[]',
+  updated_at TEXT NOT NULL,
+  UNIQUE (program_id, key)
+);
+
+CREATE TABLE IF NOT EXISTS deploy_deployments (
+  id INTEGER PRIMARY KEY,
+  asset_id INTEGER REFERENCES deploy_assets(id),
+  chain_id INTEGER,
+  address TEXT,
+  block INTEGER,
+  status TEXT NOT NULL CHECK (status IN ('MAPPED','NOT_IN_SCOPE','NOT_DEPLOYED','CHAIN_UNKNOWN','WRONG_NETWORK',
+                                         'NO_RPC','RPC_ERROR')),
+  kind TEXT CHECK (kind IS NULL OR kind IN ('DIRECT','PROXY_EIP1967','UNSUPPORTED','UNKNOWN')),
+  code_size INTEGER,
+  code_sha256 TEXT,
+  certainty TEXT NOT NULL CHECK (certainty IN ('VERIFIED','INFERRED','UNKNOWN','CONFLICTING')),
+  reasons TEXT NOT NULL DEFAULT '[]',
+  sources TEXT NOT NULL DEFAULT '[]',
+  observed_at TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS deploy_proxies (
+  id INTEGER PRIMARY KEY,
+  deployment_id INTEGER NOT NULL REFERENCES deploy_deployments(id),
+  standard TEXT NOT NULL,                     -- EIP1967 | EIP1967_BEACON | EIP1167 | LEGACY_ZOS | MULTIPLE
+  resolution TEXT NOT NULL CHECK (resolution IN ('RESOLVED','IMPLEMENTATION_NO_CODE','AMBIGUOUS','NOT_RESOLVED')),
+  implementation TEXT,
+  implementation_has_code INTEGER,            -- NULL = not established
+  beacon TEXT,
+  admin TEXT,
+  certainty TEXT NOT NULL CHECK (certainty IN ('VERIFIED','INFERRED','UNKNOWN','CONFLICTING')),
+  sources TEXT NOT NULL DEFAULT '[]',
+  observed_at TEXT NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS ix_deploy_deployments_addr ON deploy_deployments(chain_id, address, block);
+CREATE INDEX IF NOT EXISTS ix_deploy_proxies_impl ON deploy_proxies(implementation);
+
+-- D3: verified-source <-> git version correspondence. Append-only; every row keeps evidence + sources.
+CREATE TABLE IF NOT EXISTS deploy_version_matches (
+  id INTEGER PRIMARY KEY,
+  chain_id INTEGER NOT NULL,
+  address TEXT NOT NULL,
+  provider TEXT NOT NULL,                     -- sourcify
+  status TEXT NOT NULL CHECK (status IN ('EXACT_MATCH','COMPILER_MATCH','PARTIAL_MATCH','SOURCE_UNVERIFIED',
+                                         'NO_GIT_MATCH','CONFLICTING','UNKNOWN')),
+  ref TEXT,                                   -- best candidate git ref, or NULL
+  matched_sources INTEGER NOT NULL DEFAULT 0,
+  total_sources INTEGER NOT NULL DEFAULT 0,
+  nonfunctional_only INTEGER,                 -- NULL = not established
+  runtime_match TEXT,                         -- sourcify exact_match | match | NULL
+  compiler TEXT,
+  compiler_version TEXT,
+  certainty TEXT NOT NULL CHECK (certainty IN ('VERIFIED','INFERRED','UNKNOWN','CONFLICTING')),
+  evidence TEXT NOT NULL DEFAULT '[]',
+  sources TEXT NOT NULL DEFAULT '[]',
+  observed_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS ix_deploy_version_matches_addr ON deploy_version_matches(chain_id, address);
+
+-- D4: audit mapper. Documents are associated by `origin` (how they were found), never by filename.
+CREATE TABLE IF NOT EXISTS deploy_audit_docs (
+  id INTEGER PRIMARY KEY,
+  doc_id TEXT NOT NULL UNIQUE,
+  origin TEXT NOT NULL,                       -- in_repo_audits_dir | referenced_security_repo | program_page | commit_reference
+  location TEXT NOT NULL,                      -- repo path or URL
+  sha256 TEXT NOT NULL,
+  fmt TEXT NOT NULL,                           -- pdf | markdown | text | commit
+  date TEXT,
+  auditor TEXT,                                -- parsed hint only, never asserts officiality
+  created_at TEXT NOT NULL
+);
+CREATE TABLE IF NOT EXISTS deploy_audit_coverage (
+  id INTEGER PRIMARY KEY,
+  chain_id INTEGER NOT NULL,
+  address TEXT NOT NULL,
+  deployed_ref TEXT,
+  status TEXT NOT NULL CHECK (status IN ('EXPLICIT_DELTA','PRIOR_VERSION_ONLY','PARTIAL','UNKNOWN',
+                                         'PRIVATE_UNKNOWN','CONFLICTING')),
+  doc_state TEXT NOT NULL CHECK (doc_state IN ('MENTIONED','REVIEWED','FINDING_REPORTED','FIX_VERIFIED','UNKNOWN')),
+  audited_refs TEXT NOT NULL DEFAULT '[]',
+  covered_files TEXT NOT NULL DEFAULT '[]',
+  uncovered_files TEXT NOT NULL DEFAULT '[]',
+  method TEXT NOT NULL DEFAULT '',
+  certainty TEXT NOT NULL CHECK (certainty IN ('VERIFIED','INFERRED','UNKNOWN','CONFLICTING')),
+  justification TEXT NOT NULL DEFAULT '[]',
+  sources TEXT NOT NULL DEFAULT '[]',
+  observed_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS ix_deploy_audit_coverage_addr ON deploy_audit_coverage(chain_id, address);
+
+-- D5: delta engine. Deterministic (no LLM). Append-only; categories/funds/rank kept with evidence.
+CREATE TABLE IF NOT EXISTS deploy_triage_candidates (
+  id INTEGER PRIMARY KEY,
+  chain_id INTEGER NOT NULL,
+  address TEXT NOT NULL,
+  file TEXT NOT NULL,
+  audited_ref TEXT,
+  deployed_ref TEXT,
+  status TEXT NOT NULL CHECK (status IN ('PRIORITIZED','UNCERTAIN','BLOCKED','NO_FUNCTIONAL_DELTA')),
+  categories TEXT NOT NULL DEFAULT '[]',
+  funds TEXT NOT NULL DEFAULT 'UNKNOWN',
+  score REAL NOT NULL DEFAULT 0,
+  rank TEXT NOT NULL DEFAULT '{}',
+  stop_reasons TEXT NOT NULL DEFAULT '[]',
+  certainty TEXT NOT NULL CHECK (certainty IN ('VERIFIED','INFERRED','UNKNOWN','CONFLICTING')),
+  deltas TEXT NOT NULL DEFAULT '[]',
+  justification TEXT NOT NULL DEFAULT '[]',
+  sources TEXT NOT NULL DEFAULT '[]',
+  observed_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS ix_deploy_triage_addr ON deploy_triage_candidates(chain_id, address, status);
+"""
+
 _STATUS_MIGRATION = {
     "candidate": "DETECTED", "analyzing": "DETECTED", "reviewed": "ANALYZED",
     "VALIDATED_STATICALLY": "EVIDENCE_ASSESSED",
@@ -380,6 +527,7 @@ class Database:
         self.conn.executescript(VALIDATIONS_DDL)
         self.conn.executescript(BUGS_DDL)
         self.conn.executescript(DISCOVERY_DDL)
+        self.conn.executescript(DEPLOY_DDL)
         self.migrations_applied = self._migrate()
 
     # --- schema migration (introspection-based: M5 DBs carry a wrong version label) ---

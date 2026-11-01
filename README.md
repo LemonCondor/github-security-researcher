@@ -111,6 +111,7 @@ automated outreach (PRs, issues, comments).
 | Solidity analysis of local files (`contracts.solidity`) | implemented, preliminary |
 | Passive web analysis of local captures (`web.passive`), no network | implemented, preliminary |
 | Read-only discovery and ranking of organisations' public repositories | implemented |
+| Deployment-aware post-audit delta triage for DeFi (`deploy/`): scope parsing, proxy/implementation resolution, verified-source↔Git match, audit-coverage mapping, no-LLM delta engine, intra-file funds-path graph | implemented as a deterministic, offline **library + 91 tests**; **not exposed in the CLI and not yet run end-to-end on a live program** |
 | Dynamic validation (executing target code in a sandbox) | **not implemented** (see [Known limitations](#known-limitations)) |
 | Automatic PR / issue / comment creation | **not implemented by design**; switches exist and default to `false` |
 
@@ -177,6 +178,29 @@ tracked through validation, reproduction, regression test, patch and (human) PR 
 
 The contracts and web engines were measured on small, frozen, independently labelled corpora
 (`tests/fixtures/validation/`). Those numbers are preliminary and are not a precision claim for real code.
+
+### Deployment-aware delta triage (experimental library)
+
+`src/github_security/deploy/` is a self-contained, **deterministic** and **offline** library (no LLM) that
+helps decide whether a DeFi contract is worth a closer look, by comparing what is actually **deployed** to what
+was **audited**. Every fact it produces carries a certainty (`VERIFIED` / `INFERRED` / `UNKNOWN` /
+`CONFLICTING`) and its sources. It is organised as a pipeline:
+
+| Step | What it does |
+|---|---|
+| scope | parse an Immunefi program's in-scope assets (chain, address) |
+| deployment | resolve direct contracts and EIP-1967 proxies over **read-only** RPC (a four-method allowlist: `eth_chainId`, `eth_blockNumber`, `eth_getCode`, `eth_getStorageAt`; any other method is refused) |
+| source↔git | match verified on-chain source to a Git reference by content keccak (Sourcify + a pure-Python Keccak-256) |
+| audits | map documented audit coverage to a version; never infer "reviewed" from a mere mention |
+| delta | diff audited vs deployed source over tree-sitter Solidity and classify functional changes (no LLM) |
+| funds path | a conservative intra-file call graph (depth ≤ 3, cycle-safe, unambiguous calls only) for funds proximity |
+
+It applies explicit **STOP** conditions (out of scope, not deployed, implementation unresolved, source/Git
+mismatch, delta already covered by an audit) that prevail over any score, and it never turns an `UNKNOWN` into
+"no risk", a delta into a vulnerability, or a funds path into a demonstrated impact. **Status:** library and
+test suite only — it is not wired into the `github-sec` CLI and has not been run end-to-end against a live
+program. It does not find or prove vulnerabilities; it ranks *where to look* and, just as often, rules targets
+out.
 
 ## Requirements and installation
 
@@ -282,6 +306,10 @@ Verified on 2026-10-11 from a clean virtual environment (`.[dev,analysis]`, no s
 With semgrep and gitleaks installed, the scanner tests run as well.
 `GSR_LIVE_LLM=1` enables the live prompt-injection test against the local `claude` CLI.
 
+With the deployment-aware delta triage library added, a clean `.[dev,analysis]` clone (no semgrep, gitleaks, gh
+or claude) ran `624 passed, 8 skipped` offline on 2026-11-01, including the 91 deterministic tests of that
+library.
+
 ## Known limitations
 
 * No dynamic validation: target code is never executed, so code findings cannot reach `CONFIRMED`.
@@ -324,3 +352,5 @@ Realistic next steps, none of them implemented yet:
 * More Go bug families and fewer false positives, measured on frozen corpora.
 * Fuzzing harness helpers for parsers that receive untrusted input.
 * A database table for the contracts and web engines' findings (today they are report-only).
+* Wiring the deployment-aware delta triage library into the `github-sec` CLI and exercising it end-to-end on a
+  real program (today it is a library validated only by its own offline tests).
