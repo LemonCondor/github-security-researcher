@@ -1,5 +1,7 @@
 # GitHub Security Researcher (GSR)
 
+[![XERJ Corpus Hub contributor](https://hub.xerj.org/contributors/LemonCondor/badge.svg)](https://hub.xerj.org/contributors/LemonCondor)
+
 A local, policy-gated toolkit for **security and bug research on public open source code**.
 GSR scans repositories you have explicitly put in scope, stores every finding in a local SQLite database,
 gathers typed evidence about each one, and lets a **deterministic decision engine** (not an LLM) decide
